@@ -14,6 +14,11 @@ public class Referent {
     public Referent() {
     }
 
+    public Referent(String user, String pass) {
+        this.user = user;
+        this.pass = pass;
+    }
+    
     public Referent(int referentId, String ime, String prezime, String user, String pass) {
         this.referentId = referentId;
         this.ime = ime;

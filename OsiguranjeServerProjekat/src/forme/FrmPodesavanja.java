@@ -1,5 +1,10 @@
 package forme;
 
+import db.SettingsLoader;
+import java.io.IOException;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 
 /**
@@ -10,9 +15,11 @@ public class FrmPodesavanja extends javax.swing.JPanel {
 
     /**
      * Creates new form FrmPodesavanja
+     * @throws java.io.IOException
      */
-    public FrmPodesavanja() {
+    public FrmPodesavanja() throws IOException {
         initComponents();
+        srediFormu();
     }
 
     /**
@@ -51,6 +58,11 @@ public class FrmPodesavanja extends javax.swing.JPanel {
         });
 
         btnSacuvaj.setText("Sacuvaj");
+        btnSacuvaj.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSacuvajActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -105,6 +117,19 @@ public class FrmPodesavanja extends javax.swing.JPanel {
         SwingUtilities.getWindowAncestor(this).dispose();
     }//GEN-LAST:event_btnOdustaniActionPerformed
 
+    private void btnSacuvajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSacuvajActionPerformed
+        Properties prop = new Properties();
+        prop.setProperty("url", txtBaza.getText().trim());
+        prop.setProperty("user", txtUser.getText().trim());
+        prop.setProperty("password", txtPass.getText().trim());
+        try {
+            SettingsLoader.getInstance().setProperties(prop);
+            SwingUtilities.getWindowAncestor(this).dispose();
+        } catch (IOException ex) {
+            Logger.getLogger(FrmPodesavanja.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnSacuvajActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOdustani;
@@ -116,4 +141,10 @@ public class FrmPodesavanja extends javax.swing.JPanel {
     private javax.swing.JTextField txtPass;
     private javax.swing.JTextField txtUser;
     // End of variables declaration//GEN-END:variables
+
+    private void srediFormu() throws IOException {
+        txtBaza.setText(SettingsLoader.getInstance().getValue("url"));
+        txtUser.setText(SettingsLoader.getInstance().getValue("user"));
+        txtPass.setText(SettingsLoader.getInstance().getValue("password"));
+    }
 }

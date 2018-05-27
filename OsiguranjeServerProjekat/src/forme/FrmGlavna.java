@@ -1,7 +1,11 @@
 package forme;
 
 import java.awt.BorderLayout;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDialog;
+import komunikacija.Komunikacija;
 
 /**
  *
@@ -14,6 +18,7 @@ public class FrmGlavna extends javax.swing.JFrame {
      */
     public FrmGlavna() {
         initComponents();
+        btnStop.setVisible(false);
     }
 
     /**
@@ -28,11 +33,17 @@ public class FrmGlavna extends javax.swing.JFrame {
         btnStart = new javax.swing.JButton();
         btnPodesavanje = new javax.swing.JButton();
         lblStatus = new javax.swing.JLabel();
+        btnStop = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Server");
 
         btnStart.setText("Start");
+        btnStart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnStartActionPerformed(evt);
+            }
+        });
 
         btnPodesavanje.setText("Podesavanja");
         btnPodesavanje.addActionListener(new java.awt.event.ActionListener() {
@@ -41,7 +52,9 @@ public class FrmGlavna extends javax.swing.JFrame {
             }
         });
 
-        lblStatus.setText("...");
+        lblStatus.setText("Server je ugasen...");
+
+        btnStop.setText("Stop");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -55,6 +68,8 @@ public class FrmGlavna extends javax.swing.JFrame {
                         .addGap(0, 140, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnStart, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnStop, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnPodesavanje)))
                 .addContainerGap())
@@ -67,7 +82,8 @@ public class FrmGlavna extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 184, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnStart)
-                    .addComponent(btnPodesavanje))
+                    .addComponent(btnPodesavanje)
+                    .addComponent(btnStop))
                 .addContainerGap())
         );
 
@@ -75,13 +91,30 @@ public class FrmGlavna extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPodesavanjeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPodesavanjeActionPerformed
-        FrmPodesavanja f = new FrmPodesavanja();
+        FrmPodesavanja f = null;
+        try {
+            f = new FrmPodesavanja();
+        } catch (IOException ex) {
+            Logger.getLogger(FrmGlavna.class.getName()).log(Level.SEVERE, null, ex);
+        }
         JDialog d = new JDialog(this, "Podesavanje", true);
         d.setLayout(new BorderLayout());
         d.add(f, BorderLayout.CENTER);
         d.pack();
         d.setVisible(true);
     }//GEN-LAST:event_btnPodesavanjeActionPerformed
+
+    private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
+        try {
+            Komunikacija k = new Komunikacija();
+            k.pokreniServer();
+            lblStatus.setText("Server je aktivan");
+            btnStart.setVisible(false);
+            btnStop.setVisible(true);
+        } catch (IOException | ClassNotFoundException ex) {
+            Logger.getLogger(FrmGlavna.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnStartActionPerformed
 
     /**
      * @param args the command line arguments
@@ -121,6 +154,7 @@ public class FrmGlavna extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnPodesavanje;
     private javax.swing.JButton btnStart;
+    private javax.swing.JButton btnStop;
     private javax.swing.JLabel lblStatus;
     // End of variables declaration//GEN-END:variables
 }
