@@ -10,6 +10,7 @@ import transfer.Operacija;
 import transfer.TransferObjekatOdgovor;
 import transfer.TransferObjekatZahtev;
 import domen.OpstiDomenskiObjekat;
+import domen.Referent;
 
 /**
  *
@@ -47,7 +48,9 @@ public class NitKlijent extends Thread {
                         toOdgovor.setRezultat(lm);
                         break;
                     case Operacija.NADJI_REFERENTA:
-                        // Referent r = Kontroler.getInstance().nadjiReferenta(toZahtev);
+                        OpstiDomenskiObjekat r = Kontroler.getInstance().nadjiReferenta((OpstiDomenskiObjekat) toZahtev);
+                        toOdgovor.setRezultat(r);
+                        break;
                 }
             } catch (Exception ex) {
                 toOdgovor.setIzuzetak(ex);

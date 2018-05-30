@@ -2,10 +2,10 @@ package kontroler;
 
 import db.DbKomunikacija;
 import domen.OpstiDomenskiObjekat;
-import domen.Referent;
 import java.util.List;
 import so.OpstaSO;
 import so.mesto.VratiMestaSO;
+import so.referent.NadjiReferentaSO;
 
 /**
  *
@@ -29,15 +29,21 @@ public class Kontroler {
 
     public List<OpstiDomenskiObjekat> vratiMesta() throws Exception {
         OpstaSO vratiMestaSO = new VratiMestaSO();
-        vratiMestaSO.izvrsenjeSO();
+        vratiMestaSO.opsteIzvrsenjeSO();
         return ((VratiMestaSO) vratiMestaSO).getListaMesta();
     }
     
-    public Referent nadjiReferenta(Referent login) throws Exception {
-        db.ucitajDriver();
-        db.otvoriKonekciju();
-        Referent r = db.nadjiReferenta(login);
-        db.zatvoriKonekciju();
-        return r;
+    public OpstiDomenskiObjekat nadjiReferenta(OpstiDomenskiObjekat login) throws Exception {
+        OpstaSO nadjiReferentaSO = new NadjiReferentaSO();
+        nadjiReferentaSO.opsteIzvrsenjeSO();
+        return ((NadjiReferentaSO) nadjiReferentaSO).getReferenta();        
     }
+    
+    // TODO
+    // vratiKlijenta
+    // sacuvajKlijenta
+    // izbrisiKlijenta
+    // vratiVozila
+    // sacuvajPolisu
+    // itd.
 }

@@ -1,5 +1,6 @@
 package forme.glavna;
 
+import domen.OpstiDomenskiObjekat;
 import domen.Referent;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -46,8 +47,6 @@ public class FrmLogin extends javax.swing.JFrame {
         jLabel1.setText("Korisnicko ime: ");
 
         jLabel2.setText("Korisnicka sifra: ");
-
-        txtPass.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         btnLogin.setText("Login");
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
@@ -100,16 +99,22 @@ public class FrmLogin extends javax.swing.JFrame {
         try {
             String user = txtUser.getText().trim();
             String pass = txtPass.getText().trim();
-            
+
             // TODO Validacija
-            
             Referent r = new Referent(user, pass);
             TransferObjekatZahtev toZahtev = new TransferObjekatZahtev();
             toZahtev.setOperacija(Operacija.NADJI_REFERENTA);
-            toZahtev.setParametar(r);
+            toZahtev.setParametar((OpstiDomenskiObjekat) r);
             Komunikacija.getInstance().posalji(toZahtev);
             TransferObjekatOdgovor toOdgovor = Komunikacija.getInstance().procitaj();
-        } catch (IOException | ClassNotFoundException ex) {
+            if (toOdgovor.getIzuzetak() == null) {
+                System.out.println(toOdgovor.getRezultat().toString());
+                JOptionPane.showMessageDialog(this, "Referent je nadjen");
+            } else {
+                System.out.println("Greska: " + toOdgovor.getPoruka());
+                throw new Exception(toOdgovor.getIzuzetak());
+            }
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
     }//GEN-LAST:event_btnLoginActionPerformed

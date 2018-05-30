@@ -59,16 +59,26 @@ public class Mesto implements OpstiDomenskiObjekat {
     }
 
     @Override
-    public List<OpstiDomenskiObjekat> ucitaj(ResultSet rs) throws Exception {
+    public List<OpstiDomenskiObjekat> vratiListuIzResultSeta(ResultSet rs) throws Exception {
         try {
             List<OpstiDomenskiObjekat> lo = new LinkedList<>();
             while (rs.next()) {
                 int pttLocal = rs.getInt("Ptt");
                 String nazivLocal = rs.getString("Naziv");
-                Mesto m = new Mesto(pttLocal, nazivLocal);
-                lo.add(m);
+                lo.add(new Mesto(pttLocal, nazivLocal));
             }
             return lo;
+        } catch (SQLException ex) {
+            throw ex;
+        }
+    }
+
+    @Override
+    public OpstiDomenskiObjekat vratiObjekatIzResultSeta(ResultSet rs) throws Exception {
+        try {
+            int pttLocal = rs.getInt("Ptt");
+            String nazivLocal = rs.getString("Naziv");
+            return new Mesto(pttLocal, nazivLocal);
         } catch (SQLException ex) {
             throw ex;
         }

@@ -1,14 +1,11 @@
 package db;
 
-import domen.Mesto;
 import domen.OpstiDomenskiObjekat;
-import domen.Referent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -63,52 +60,72 @@ public class DbKomunikacija {
         }
     }
 
-    public List<Mesto> vratiMesta() throws Exception {
-        List<Mesto> lm = new LinkedList<>();
-        try {
-            String sql = "SELECT * FROM Mesto";
-            Statement sqlStatement = connection.createStatement();
-            ResultSet rs = sqlStatement.executeQuery(sql);
-            while (rs.next()) {
-                int ptt = rs.getInt(1);
-                String naziv = rs.getString(2);
-                Mesto m = new Mesto(ptt, naziv);
-                lm.add(m);
-            }
-            return lm;
-        } catch (SQLException ex) {
-            throw new Exception("Neuspesno ucitavanje liste mesta! " + ex.getMessage());
-        }
+    public void sacuvaj(OpstiDomenskiObjekat odo) {
+        // TODO        
     }
 
-    public Referent nadjiReferenta(Referent login) throws Exception {
-        Referent r = new Referent();
-        try {
-            String sql = "SELECT * FROM Referent WHERE " + login.getUser()
-                    + " = KorisnickoIme AND " + login.getPass() + " = KorisnickaSifra";
-            Statement sqlStatement = connection.createStatement();
-            ResultSet rs = sqlStatement.executeQuery(sql);
-            if (rs.next()) {
-                r.setReferentId(rs.getInt(1));
-                r.setIme(rs.getString(2));
-                r.setPrezime(rs.getString(3));
-                r.setUser(rs.getString(4));
-                r.setPass(rs.getString(5));
-            }
-        } catch (SQLException e) {
-            throw new Exception("Neuspesno ucitavanje referenta " + e.getMessage());
-        }
-        return r;
+    public void obrisi(OpstiDomenskiObjekat odo) {
+        // TODO
     }
 
-    public List<OpstiDomenskiObjekat> vratiSve(OpstiDomenskiObjekat odo) throws Exception {
+    public void izmeni(OpstiDomenskiObjekat odo) {
+        // TODO
+    }
+
+    public void getID() {
+        // TODO
+    }
+
+    public List<OpstiDomenskiObjekat> vratiSveObjekte(OpstiDomenskiObjekat odo) throws Exception {
         try {
             String sql = "SELECT * FROM " + odo.vratiNazivTabele();
             Statement sqlStatement = connection.createStatement();
             ResultSet rs = sqlStatement.executeQuery(sql);
-            return odo.ucitaj(rs);
+            return odo.vratiListuIzResultSeta(rs);
         } catch (SQLException ex) {
             throw new Exception("Neuspesno ucitavanje objekata!", ex);
         }
     }
+
+    public OpstiDomenskiObjekat vratiObjekat(OpstiDomenskiObjekat odo) {
+        // TODO
+        return odo;
+    }
+
+    public List<OpstiDomenskiObjekat> pretraziObjekte(int tipPretrage, Object parametarPretrage, OpstiDomenskiObjekat odo) {
+        // TODO
+        return null;
+    }
+
+//    public Referent nadjiReferenta(Referent login) throws Exception {
+//        Referent r = new Referent();
+//        try {
+//            String sql = "SELECT * FROM Referent WHERE '" + login.getUser()
+//                    + "' = KorisnickoIme AND '" + login.getPass() + "' = KorisnickaSifra";
+//            Statement sqlStatement = connection.createStatement();
+//            ResultSet rs = sqlStatement.executeQuery(sql);
+//            if (rs.next()) {
+//                r.setReferentId(rs.getInt(1));
+//                r.setIme(rs.getString(2));
+//                r.setPrezime(rs.getString(3));
+//                r.setUser(rs.getString(4));
+//                r.setPass(rs.getString(5));
+//            }
+//        } catch (SQLException e) {
+//            throw new Exception("Neuspesno ucitavanje referenta " + e.getMessage());
+//        }
+//        return r;
+//    }
+//    public static void main(String[] args) {
+//        try {
+//            DbKomunikacija db = new DbKomunikacija();
+//            db.ucitajDriver();
+//            db.otvoriKonekciju();
+//            Referent r = db.nadjiReferenta(new Referent("admin", "admin"));
+//            db.zatvoriKonekciju();
+//            System.out.println(r.toString());
+//        } catch (Exception ex) {
+//            System.out.println("Greska: " + ex);
+//        }
+//    }
 }

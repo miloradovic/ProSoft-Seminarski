@@ -1,10 +1,14 @@
 package domen;
 
+import java.sql.ResultSet;
+import java.util.List;
+
 /**
  *
  * @author Darko
  */
-public class Klijent {
+public class Klijent implements OpstiDomenskiObjekat {
+
     private int klijentId;
     private String ime;
     private String prezime;
@@ -76,6 +80,30 @@ public class Klijent {
     public String toString() {
         return ime + " " + prezime;
     }
-    
-    
+
+    @Override
+    public String vratiNazivTabele() {
+        return "Klijent";
+    }
+
+    @Override
+    public String vratiAtributeZaInsert() {
+        return "";
+    }
+
+    @Override
+    public String vratiVrednostiZaInsert() {
+        return "";
+    }
+
+    @Override
+    public List<OpstiDomenskiObjekat> vratiListuIzResultSeta(ResultSet rs) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public OpstiDomenskiObjekat vratiObjekatIzResultSeta(ResultSet rs) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }

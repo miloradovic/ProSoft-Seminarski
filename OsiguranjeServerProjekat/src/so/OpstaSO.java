@@ -20,7 +20,7 @@ public abstract class OpstaSO {
         this.db = new DbKomunikacija();
     }
 
-    public synchronized final void izvrsenjeSO() throws Exception {
+    public synchronized final void opsteIzvrsenjeSO() throws Exception {
         try {
             ucitajDriver();
             otvoriKonekciju();

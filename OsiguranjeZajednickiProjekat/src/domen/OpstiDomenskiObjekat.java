@@ -16,6 +16,8 @@ public interface OpstiDomenskiObjekat extends Serializable {
 
     String vratiVrednostiZaInsert();
 
-    List<OpstiDomenskiObjekat> ucitaj(ResultSet rs) throws Exception;
+    List<OpstiDomenskiObjekat> vratiListuIzResultSeta(ResultSet rs) throws Exception;
+
+    OpstiDomenskiObjekat vratiObjekatIzResultSeta(ResultSet rs) throws Exception;
 
 }

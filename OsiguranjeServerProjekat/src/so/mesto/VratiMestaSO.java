@@ -19,7 +19,7 @@ public class VratiMestaSO extends OpstaSO {
 
     @Override
     protected void izvrsiOperaciju(Object obj) throws Exception {
-        listaMesta = db.vratiSve(new Mesto());
+        listaMesta = db.vratiSveObjekte(new Mesto());
     }
 
     public List<OpstiDomenskiObjekat> getListaMesta() {
