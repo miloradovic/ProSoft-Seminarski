@@ -11,12 +11,12 @@ public class CenovnikOsiguranja implements OpstiDomenskiObjekat {
 
     private int cenovnikId;
     private String kategorija;
-    private int cena;
+    private double cena;
 
     public CenovnikOsiguranja() {
     }
 
-    public CenovnikOsiguranja(int cenovnikId, String kategorija, int cena) {
+    public CenovnikOsiguranja(int cenovnikId, String kategorija, double cena) {
         this.cenovnikId = cenovnikId;
         this.kategorija = kategorija;
         this.cena = cena;
@@ -38,7 +38,7 @@ public class CenovnikOsiguranja implements OpstiDomenskiObjekat {
         this.kategorija = kategorija;
     }
 
-    public int getCena() {
+    public double getCena() {
         return cena;
     }
 
@@ -52,28 +52,28 @@ public class CenovnikOsiguranja implements OpstiDomenskiObjekat {
     }
 
     @Override
-    public String vratiNazivTabele() {
-        return "CenovnikOsiguranja";
+    public String unos() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public String vratiAtributeZaInsert() {
-        return "";
+    public String izmena() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public String vratiVrednostiZaInsert() {
-        return "";
+    public String brisanje() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<OpstiDomenskiObjekat> vratiListuIzResultSeta(ResultSet rs) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public String pretraga() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public OpstiDomenskiObjekat vratiObjekatIzResultSeta(ResultSet rs) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public List<OpstiDomenskiObjekat> ucitaj(ResultSet rs) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

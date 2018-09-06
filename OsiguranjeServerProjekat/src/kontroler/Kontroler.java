@@ -1,9 +1,12 @@
 package kontroler;
 
 import db.DbKomunikacija;
+import domen.Klijent;
 import domen.OpstiDomenskiObjekat;
 import java.util.List;
 import so.OpstaSO;
+import so.klijent.KreirajNovogKlijentaSO;
+import so.klijent.ZapamtiKlijentaSO;
 import so.mesto.VratiMestaSO;
 import so.referent.NadjiReferentaSO;
 
@@ -15,7 +18,7 @@ public class Kontroler {
 
     private static Kontroler instance;
 
-    private DbKomunikacija db = new DbKomunikacija();
+    private final DbKomunikacija db = new DbKomunikacija();
 
     private Kontroler() {
     }
@@ -29,21 +32,24 @@ public class Kontroler {
 
     public List<OpstiDomenskiObjekat> vratiMesta() throws Exception {
         OpstaSO vratiMestaSO = new VratiMestaSO();
-        vratiMestaSO.opsteIzvrsenjeSO();
+        vratiMestaSO.izvrsenjeSO();
         return ((VratiMestaSO) vratiMestaSO).getListaMesta();
     }
     
     public OpstiDomenskiObjekat nadjiReferenta(OpstiDomenskiObjekat login) throws Exception {
-        OpstaSO nadjiReferentaSO = new NadjiReferentaSO();
-        nadjiReferentaSO.opsteIzvrsenjeSO();
+        OpstaSO nadjiReferentaSO = new NadjiReferentaSO(login);
+        nadjiReferentaSO.izvrsenjeSO();
         return ((NadjiReferentaSO) nadjiReferentaSO).getReferenta();        
     }
-    
-    // TODO
-    // vratiKlijenta
-    // sacuvajKlijenta
-    // izbrisiKlijenta
-    // vratiVozila
-    // sacuvajPolisu
-    // itd.
+
+    public int kreirajNovogKlijenta() throws Exception {
+        OpstaSO kreirajNovogKlijenta = new KreirajNovogKlijentaSO();
+        kreirajNovogKlijenta.izvrsenjeSO();
+        return ((KreirajNovogKlijentaSO) kreirajNovogKlijenta).getNovogKlijenta();
+    }
+
+    public void zapamtiKlijenta(Klijent k) throws Exception {
+        OpstaSO zapamtiKlijenta = new ZapamtiKlijentaSO(k);
+        zapamtiKlijenta.izvrsenjeSO();
+    }
 }

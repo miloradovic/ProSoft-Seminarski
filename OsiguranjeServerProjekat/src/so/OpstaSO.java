@@ -20,11 +20,10 @@ public abstract class OpstaSO {
         this.db = new DbKomunikacija();
     }
 
-    public synchronized final void opsteIzvrsenjeSO() throws Exception {
+    public synchronized final void izvrsenjeSO() throws Exception {
         try {
             ucitajDriver();
             otvoriKonekciju();
-            proveriPreduslov(obj);
             izvrsiOperaciju(obj);
             commitTransakcije();
         } catch (Exception ex) {
@@ -42,8 +41,6 @@ public abstract class OpstaSO {
     private void otvoriKonekciju() throws Exception {
         db.otvoriKonekciju();
     }
-
-    protected abstract void proveriPreduslov(Object obj) throws Exception;
 
     protected abstract void izvrsiOperaciju(Object obj) throws Exception;
 

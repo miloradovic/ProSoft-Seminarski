@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
-import komunikacija.Komunikacija;
+import komunikacija.Server;
 
 /**
  *
@@ -13,6 +13,7 @@ import komunikacija.Komunikacija;
  */
 public class FrmGlavna extends javax.swing.JFrame {
 
+    Server server;
     /**
      * Creates new form FrmGlavna
      */
@@ -105,15 +106,11 @@ public class FrmGlavna extends javax.swing.JFrame {
     }//GEN-LAST:event_btnPodesavanjeActionPerformed
 
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
-        try {
-            Komunikacija k = new Komunikacija();
-            k.pokreniServer();
-            lblStatus.setText("Server je aktivan");
-            btnStart.setVisible(false);
-            btnStop.setVisible(true);
-        } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(FrmGlavna.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        server = new Server();
+        server.start();
+        lblStatus.setText("Server je aktivan");
+        btnStart.setVisible(false);
+        btnStop.setVisible(true);
     }//GEN-LAST:event_btnStartActionPerformed
 
     /**

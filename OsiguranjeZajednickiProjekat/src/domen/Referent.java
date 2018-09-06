@@ -2,7 +2,7 @@ package domen;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,6 +10,7 @@ import java.util.List;
  * @author Darko
  */
 public class Referent implements OpstiDomenskiObjekat {
+
     private int referentId;
     private String ime;
     private String prezime;
@@ -19,11 +20,6 @@ public class Referent implements OpstiDomenskiObjekat {
     public Referent() {
     }
 
-    public Referent(String user, String pass) {
-        this.user = user;
-        this.pass = pass;
-    }
-    
     public Referent(int referentId, String ime, String prezime, String user, String pass) {
         this.referentId = referentId;
         this.ime = ime;
@@ -78,45 +74,44 @@ public class Referent implements OpstiDomenskiObjekat {
     }
 
     @Override
-    public String vratiNazivTabele() {
-        return "Referent";
+    public String unos() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public String vratiAtributeZaInsert() {
-        return "ReferentID, Ime, Prezime, KorisnickoIme, KorisnickaSifra";
+    public String izmena() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public String vratiVrednostiZaInsert() {
-        return referentId + ",'" + ime + ",'" + prezime + ",'" 
-                + user + ",'" + pass + "'";
+    public String brisanje() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<OpstiDomenskiObjekat> vratiListuIzResultSeta(ResultSet rs) throws Exception {
-        try {
-            List<OpstiDomenskiObjekat> lo = new LinkedList<>();
-            while (rs.next()) {
-                int id = rs.getInt(1);
-                String imeLocal = rs.getString(2);
-                String prezimeLocal = rs.getString(3);
-                String username = rs.getString(4);
-                String password = rs.getString(5);
-                Referent r = new Referent(id, imeLocal, prezimeLocal, username, password);
-                
-                lo.add(r);
-            }
-            return lo;
-        } catch (SQLException ex) {
-            throw ex;
+    public String pretraga() {
+        if (user != null && pass != null) {
+            return "SELECT * FROM Referent WHERE KorisnickoIme = '" + user + "' AND KorisnickaSifra = '" + pass + "'";
         }
+        return "SELECT * FROM Referent";
     }
 
     @Override
-    public OpstiDomenskiObjekat vratiObjekatIzResultSeta(ResultSet rs) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public List<OpstiDomenskiObjekat> ucitaj(ResultSet rs) throws Exception {
+        List<OpstiDomenskiObjekat> lista = new ArrayList<>();
+        try {
+            while (rs.next()) {
+                lista.add(new Referent(
+                        rs.getInt("referentID"), 
+                        rs.getString("Ime"), 
+                        rs.getString("Prezime"), 
+                        rs.getString("KorisnickoIme"), 
+                        rs.getString("KorisnickaSifra")));
+            }
+        } catch (SQLException e) {
+            System.out.println("Greska prilikom ucitavanja: " + e);
+        }
+        return lista;
     }
-    
-    
+
 }

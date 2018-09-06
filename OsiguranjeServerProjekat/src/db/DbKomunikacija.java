@@ -3,7 +3,6 @@ package db;
 import domen.OpstiDomenskiObjekat;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
@@ -15,6 +14,7 @@ import java.util.List;
 public class DbKomunikacija {
 
     private Connection connection;
+    private Statement sqlStatement;
 
     public void ucitajDriver() throws Exception {
         try {
@@ -60,72 +60,45 @@ public class DbKomunikacija {
         }
     }
 
-    public void sacuvaj(OpstiDomenskiObjekat odo) {
-        // TODO        
-    }
-
-    public void obrisi(OpstiDomenskiObjekat odo) {
-        // TODO
-    }
-
-    public void izmeni(OpstiDomenskiObjekat odo) {
-        // TODO
-    }
-
-    public void getID() {
-        // TODO
-    }
-
-    public List<OpstiDomenskiObjekat> vratiSveObjekte(OpstiDomenskiObjekat odo) throws Exception {
+    public void sacuvaj(OpstiDomenskiObjekat odo) throws Exception {
         try {
-            String sql = "SELECT * FROM " + odo.vratiNazivTabele();
-            Statement sqlStatement = connection.createStatement();
-            ResultSet rs = sqlStatement.executeQuery(sql);
-            return odo.vratiListuIzResultSeta(rs);
+            sqlStatement = connection.createStatement();
+            sqlStatement.executeUpdate(odo.unos());
+            sqlStatement.close();
         } catch (SQLException ex) {
-            throw new Exception("Neuspesno ucitavanje objekata!", ex);
+            throw new Exception("Neuspesno cuvanje objekta!", ex);
         }
     }
 
-    public OpstiDomenskiObjekat vratiObjekat(OpstiDomenskiObjekat odo) {
-        // TODO
-        return odo;
+    public void obrisi(OpstiDomenskiObjekat odo) throws Exception {
+        try {
+            sqlStatement = connection.createStatement();
+            sqlStatement.executeUpdate(odo.brisanje());
+            sqlStatement.close();
+        } catch (SQLException e) {
+            throw new Exception("Neuspesno brisanje objekta!", e);
+        }
     }
 
-    public List<OpstiDomenskiObjekat> pretraziObjekte(int tipPretrage, Object parametarPretrage, OpstiDomenskiObjekat odo) {
-        // TODO
-        return null;
+    public void izmeni(OpstiDomenskiObjekat odo) throws Exception {
+        try {
+            sqlStatement = connection.createStatement();
+            sqlStatement.executeUpdate(odo.izmena());
+            sqlStatement.close();
+        } catch (SQLException e) {
+            throw new Exception("Neuspesna izmena objekta!", e);
+        }
     }
 
-//    public Referent nadjiReferenta(Referent login) throws Exception {
-//        Referent r = new Referent();
-//        try {
-//            String sql = "SELECT * FROM Referent WHERE '" + login.getUser()
-//                    + "' = KorisnickoIme AND '" + login.getPass() + "' = KorisnickaSifra";
-//            Statement sqlStatement = connection.createStatement();
-//            ResultSet rs = sqlStatement.executeQuery(sql);
-//            if (rs.next()) {
-//                r.setReferentId(rs.getInt(1));
-//                r.setIme(rs.getString(2));
-//                r.setPrezime(rs.getString(3));
-//                r.setUser(rs.getString(4));
-//                r.setPass(rs.getString(5));
-//            }
-//        } catch (SQLException e) {
-//            throw new Exception("Neuspesno ucitavanje referenta " + e.getMessage());
-//        }
-//        return r;
-//    }
-//    public static void main(String[] args) {
-//        try {
-//            DbKomunikacija db = new DbKomunikacija();
-//            db.ucitajDriver();
-//            db.otvoriKonekciju();
-//            Referent r = db.nadjiReferenta(new Referent("admin", "admin"));
-//            db.zatvoriKonekciju();
-//            System.out.println(r.toString());
-//        } catch (Exception ex) {
-//            System.out.println("Greska: " + ex);
-//        }
-//    }
+    public List<OpstiDomenskiObjekat> pretrazi(OpstiDomenskiObjekat odo) throws Exception {
+        try {
+            sqlStatement = connection.createStatement();
+            List list = odo.ucitaj(sqlStatement.executeQuery(odo.pretraga()));
+            sqlStatement.close();
+            return list;
+        } catch (Exception e) {
+            throw new Exception("Neuspesna pretraga: ", e);
+        }
+    }
+
 }

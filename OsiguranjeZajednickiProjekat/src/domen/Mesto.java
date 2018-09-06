@@ -40,26 +40,31 @@ public class Mesto implements OpstiDomenskiObjekat {
 
     @Override
     public String toString() {
-        return ptt + ", " + naziv;
+        return naziv + " [" + ptt + "]";
     }
 
     @Override
-    public String vratiNazivTabele() {
-        return "Mesto";
+    public String unos() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public String vratiAtributeZaInsert() {
-        return "Ptt, Naziv";
+    public String izmena() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public String vratiVrednostiZaInsert() {
-        return ptt + ",'" + naziv + "'";
+    public String brisanje() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<OpstiDomenskiObjekat> vratiListuIzResultSeta(ResultSet rs) throws Exception {
+    public String pretraga() {
+        return "SELECT * FROM Mesto";
+    }
+
+    @Override
+    public List<OpstiDomenskiObjekat> ucitaj(ResultSet rs) throws Exception {
         try {
             List<OpstiDomenskiObjekat> lo = new LinkedList<>();
             while (rs.next()) {
@@ -68,17 +73,6 @@ public class Mesto implements OpstiDomenskiObjekat {
                 lo.add(new Mesto(pttLocal, nazivLocal));
             }
             return lo;
-        } catch (SQLException ex) {
-            throw ex;
-        }
-    }
-
-    @Override
-    public OpstiDomenskiObjekat vratiObjekatIzResultSeta(ResultSet rs) throws Exception {
-        try {
-            int pttLocal = rs.getInt("Ptt");
-            String nazivLocal = rs.getString("Naziv");
-            return new Mesto(pttLocal, nazivLocal);
         } catch (SQLException ex) {
             throw ex;
         }

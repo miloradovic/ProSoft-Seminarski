@@ -1,7 +1,7 @@
 package so.referent;
 
 import domen.OpstiDomenskiObjekat;
-import domen.Referent;
+import java.util.List;
 import so.OpstaSO;
 
 /**
@@ -10,18 +10,21 @@ import so.OpstaSO;
  */
 public class NadjiReferentaSO extends OpstaSO {
     
-    OpstiDomenskiObjekat referent;
+    List<OpstiDomenskiObjekat> referent;
 
-    @Override
-    protected void proveriPreduslov(Object obj) throws Exception {        
+    public NadjiReferentaSO(Object obj) {
+        super(obj);
     }
 
     @Override
     protected void izvrsiOperaciju(Object obj) throws Exception {
-        // referent = (OpstiDomenskiObjekat) db.nadjiReferenta((Referent) obj);
+        referent = db.pretrazi((OpstiDomenskiObjekat) obj);
     }
     
     public OpstiDomenskiObjekat getReferenta() {
-        return referent;
+        if (referent.isEmpty()) {
+            return null;
+        }
+        return referent.get(0);
     }
 }

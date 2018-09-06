@@ -10,14 +10,14 @@ import java.util.List;
  */
 public interface OpstiDomenskiObjekat extends Serializable {
 
-    String vratiNazivTabele();
+    String unos();
 
-    String vratiAtributeZaInsert();
+    String izmena();
 
-    String vratiVrednostiZaInsert();
+    String brisanje();
+    
+    String pretraga();
 
-    List<OpstiDomenskiObjekat> vratiListuIzResultSeta(ResultSet rs) throws Exception;
-
-    OpstiDomenskiObjekat vratiObjekatIzResultSeta(ResultSet rs) throws Exception;
+    List<OpstiDomenskiObjekat> ucitaj(ResultSet rs) throws Exception;
 
 }

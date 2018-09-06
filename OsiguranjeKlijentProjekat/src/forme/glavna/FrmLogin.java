@@ -2,9 +2,8 @@ package forme.glavna;
 
 import domen.OpstiDomenskiObjekat;
 import domen.Referent;
+import java.awt.HeadlessException;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import komunikacija.Komunikacija;
 import transfer.Operacija;
@@ -86,9 +85,9 @@ public class FrmLogin extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(btnLogin)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -97,24 +96,35 @@ public class FrmLogin extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         try {
+            // Validacija
+            if (txtUser.getText().isEmpty() || txtPass.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Unesi podatke");
+                return;
+            }
+            
             String user = txtUser.getText().trim();
             String pass = txtPass.getText().trim();
-
-            // TODO Validacija
-            Referent r = new Referent(user, pass);
+            
+            Referent r = new Referent();
+            r.setUser(user);
+            r.setPass(pass);
             TransferObjekatZahtev toZahtev = new TransferObjekatZahtev();
             toZahtev.setOperacija(Operacija.NADJI_REFERENTA);
             toZahtev.setParametar((OpstiDomenskiObjekat) r);
+            
             Komunikacija.getInstance().posalji(toZahtev);
             TransferObjekatOdgovor toOdgovor = Komunikacija.getInstance().procitaj();
-            if (toOdgovor.getIzuzetak() == null) {
-                System.out.println(toOdgovor.getRezultat().toString());
-                JOptionPane.showMessageDialog(this, "Referent je nadjen");
+            
+            r = (Referent) toOdgovor.getRezultat();
+            if (r != null) {
+                FrmMain glavna = new FrmMain();
+                glavna.setVisible(true);
+                this.setVisible(false);
+                this.dispose();
             } else {
-                System.out.println("Greska: " + toOdgovor.getPoruka());
-                throw new Exception(toOdgovor.getIzuzetak());
+                JOptionPane.showMessageDialog(this, "Netacni podaci ili navedeni Referent ne postoji.");
             }
-        } catch (Exception ex) {
+        } catch (HeadlessException | IOException | ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
     }//GEN-LAST:event_btnLoginActionPerformed

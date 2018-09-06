@@ -12,18 +12,18 @@ public class Klijent implements OpstiDomenskiObjekat {
     private int klijentId;
     private String ime;
     private String prezime;
-    private String jbmg;
+    private String jmbg;
     private String ulicaBroj;
     private Mesto mesto;
 
     public Klijent() {
     }
 
-    public Klijent(int klijentId, String ime, String prezime, String jbmg, String ulicaBroj, Mesto mesto) {
+    public Klijent(int klijentId, String ime, String prezime, String jmbg, String ulicaBroj, Mesto mesto) {
         this.klijentId = klijentId;
         this.ime = ime;
         this.prezime = prezime;
-        this.jbmg = jbmg;
+        this.jmbg = jmbg;
         this.ulicaBroj = ulicaBroj;
         this.mesto = mesto;
     }
@@ -52,12 +52,12 @@ public class Klijent implements OpstiDomenskiObjekat {
         this.prezime = prezime;
     }
 
-    public String getJbmg() {
-        return jbmg;
+    public String getJmbg() {
+        return jmbg;
     }
 
-    public void setJbmg(String jbmg) {
-        this.jbmg = jbmg;
+    public void setJmbg(String jmbg) {
+        this.jmbg = jmbg;
     }
 
     public String getUlicaBroj() {
@@ -82,28 +82,28 @@ public class Klijent implements OpstiDomenskiObjekat {
     }
 
     @Override
-    public String vratiNazivTabele() {
-        return "Klijent";
+    public String unos() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public String vratiAtributeZaInsert() {
-        return "";
+    public String izmena() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public String vratiVrednostiZaInsert() {
-        return "";
+    public String brisanje() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<OpstiDomenskiObjekat> vratiListuIzResultSeta(ResultSet rs) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public String pretraga() {
+        return "SELECT * FROM Klijent k JOIN Mesto m on k.ptt = m.ptt";
     }
 
     @Override
-    public OpstiDomenskiObjekat vratiObjekatIzResultSeta(ResultSet rs) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public List<OpstiDomenskiObjekat> ucitaj(ResultSet rs) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
