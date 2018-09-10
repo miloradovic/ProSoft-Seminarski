@@ -1,10 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package so.klijent;
 
+import domen.OpstiDomenskiObjekat;
+import java.util.List;
 import so.OpstaSO;
 
 /**
@@ -13,9 +10,14 @@ import so.OpstaSO;
  */
 public class PretraziKlijenteSO extends OpstaSO {
 
+    List<OpstiDomenskiObjekat> listaKlijenata;
+
     @Override
     protected void izvrsiOperaciju(Object obj) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        listaKlijenata = db.pretrazi((OpstiDomenskiObjekat) obj);
     }
-    
+
+    public List<OpstiDomenskiObjekat> getListaKlijenata() {
+        return listaKlijenata;
+    }
 }

@@ -1,5 +1,7 @@
 package so.vozilo;
 
+import domen.OpstiDomenskiObjekat;
+import java.util.List;
 import so.OpstaSO;
 
 /**
@@ -8,9 +10,14 @@ import so.OpstaSO;
  */
 public class PretraziVozilaSO extends OpstaSO {
 
+    List<OpstiDomenskiObjekat> listaVozila;
+    
     @Override
     protected void izvrsiOperaciju(Object obj) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        listaVozila = db.pretrazi((OpstiDomenskiObjekat) obj);
     }
     
+    public List<OpstiDomenskiObjekat> getListaVozila() {
+        return listaVozila;
+    }
 }

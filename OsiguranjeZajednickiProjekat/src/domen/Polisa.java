@@ -1,6 +1,8 @@
 package domen;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,19 +13,28 @@ import java.util.List;
 public class Polisa implements OpstiDomenskiObjekat {
 
     private int polisaId;
-    private int ukupno;
+    private double ukupno;
     private int premijskiStepen;
     private Date datumUgovaranja;
     private Date datumRaskidanja;
+    private String tip;
+    private Klijent klijent;
+    private Vozilo vozilo;
+    private Referent referent;
 
     public Polisa() {
     }
 
-    public Polisa(int polisaId, int ukupno, int premijskiStepen, Date datumUgovaranja) {
+    public Polisa(int polisaId, double ukupno, int premijskiStepen, Date datumUgovaranja, Date datumRaskidanja, String tip, Klijent klijent, Vozilo vozilo, Referent referent) {
         this.polisaId = polisaId;
         this.ukupno = ukupno;
         this.premijskiStepen = premijskiStepen;
         this.datumUgovaranja = datumUgovaranja;
+        this.datumRaskidanja = datumRaskidanja;
+        this.tip = tip;
+        this.klijent = klijent;
+        this.vozilo = vozilo;
+        this.referent = referent;
     }
 
     public int getPolisaId() {
@@ -34,11 +45,11 @@ public class Polisa implements OpstiDomenskiObjekat {
         this.polisaId = polisaId;
     }
 
-    public int getUkupno() {
+    public double getUkupno() {
         return ukupno;
     }
 
-    public void setUkupno(int ukupno) {
+    public void setUkupno(double ukupno) {
         this.ukupno = ukupno;
     }
 
@@ -68,12 +79,19 @@ public class Polisa implements OpstiDomenskiObjekat {
 
     @Override
     public String unos() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return String.format(
+                "INSERT INTO polisa VALUES (%d, %f, %d, '%date', '%date', '%s', %d, %d, %d)",
+                polisaId, ukupno, premijskiStepen, datumUgovaranja, datumRaskidanja, tip,
+                klijent.getKlijentId(),
+                vozilo.getVoziloId(),
+                referent.getReferentId());
     }
 
     @Override
     public String izmena() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return String.format(
+                "UPDATE polisa SET DatumRaskidanja = '%date' WHERE PolisaID = %d",
+                datumRaskidanja, polisaId);
     }
 
     @Override
@@ -83,12 +101,32 @@ public class Polisa implements OpstiDomenskiObjekat {
 
     @Override
     public String pretraga() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (polisaId == -1) {
+            return "";
+        }
+        return "SELECT * FROM polisa";
     }
 
     @Override
     public List<OpstiDomenskiObjekat> ucitaj(ResultSet rs) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<OpstiDomenskiObjekat> lista = new ArrayList<>();
+        try {
+            while (rs.next()) {
+                lista.add(new Polisa(
+                        rs.getInt("PolisaID"),
+                        rs.getDouble("Ukupno"),
+                        rs.getInt("PremijskiStepen"),
+                        rs.getDate("DatumUgovaranja"),
+                        rs.getDate("DatumRaskidanja"),
+                        rs.getString("Tip"),
+                        new Klijent(),
+                        new Vozilo(),
+                        new Referent()));
+            }
+        } catch (SQLException e) {
+            System.out.println("Greska prilikom ucitavanja: " + e);
+        }
+        return lista;
     }
 
 }

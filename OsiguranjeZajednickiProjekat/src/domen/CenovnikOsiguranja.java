@@ -1,6 +1,8 @@
 package domen;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -68,12 +70,23 @@ public class CenovnikOsiguranja implements OpstiDomenskiObjekat {
 
     @Override
     public String pretraga() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return "SELECT * FROM cenovnik_osiguranja";
     }
 
     @Override
     public List<OpstiDomenskiObjekat> ucitaj(ResultSet rs) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<OpstiDomenskiObjekat> lista = new ArrayList<>();
+        try {
+            while (rs.next()) {
+                lista.add(new CenovnikOsiguranja(
+                        rs.getInt("CenovnikID"),
+                        rs.getString("Kategorija"),
+                        rs.getDouble("Cena")));
+            }
+        } catch (SQLException e) {
+            System.out.println("Greska prilikom ucitavanja: " + e);
+        }
+        return lista;
     }
 
 }

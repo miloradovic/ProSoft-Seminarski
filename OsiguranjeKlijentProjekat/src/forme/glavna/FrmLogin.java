@@ -9,6 +9,7 @@ import komunikacija.Komunikacija;
 import transfer.Operacija;
 import transfer.TransferObjekatOdgovor;
 import transfer.TransferObjekatZahtev;
+import util.Sesija;
 
 /**
  *
@@ -117,6 +118,8 @@ public class FrmLogin extends javax.swing.JFrame {
             
             r = (Referent) toOdgovor.getRezultat();
             if (r != null) {
+                Sesija.getInstance().put("Referent", r);
+                
                 FrmMain glavna = new FrmMain();
                 glavna.setVisible(true);
                 this.setVisible(false);

@@ -1,9 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package forme.vozila;
+
+import forme.vozila.model.ModelTabeleVozila;
+import java.io.IOException;
+import java.util.List;
+import javax.swing.RowFilter;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+import komunikacija.Komunikacija;
+import transfer.Operacija;
+import transfer.TransferObjekatOdgovor;
+import transfer.TransferObjekatZahtev;
 
 /**
  *
@@ -11,11 +17,15 @@ package forme.vozila;
  */
 public class FrmPretragaVozila extends javax.swing.JPanel {
 
+    TransferObjekatZahtev toZahtev;
+    TransferObjekatOdgovor toOdgovor;
+
     /**
      * Creates new form FrmPretragaVozila
      */
     public FrmPretragaVozila() {
         initComponents();
+        srediFormu();
     }
 
     /**
@@ -27,19 +37,112 @@ public class FrmPretragaVozila extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        txtRegTablice = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txtModel = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jtblVozila = new javax.swing.JTable();
+
+        jLabel1.setText("Registarske tablice: ");
+
+        txtRegTablice.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtRegTabliceActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Model: ");
+
+        txtModel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtModelActionPerformed(evt);
+            }
+        });
+
+        jtblVozila.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jtblVozila);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 586, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtModel)
+                            .addComponent(txtRegTablice))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtRegTablice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtModel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void txtRegTabliceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRegTabliceActionPerformed
+        TableRowSorter<TableModel> sorter = new TableRowSorter<>(((ModelTabeleVozila) jtblVozila.getModel()));
+        sorter.setRowFilter(RowFilter.regexFilter(txtRegTablice.getText()));
+        jtblVozila.setRowSorter(sorter);
+    }//GEN-LAST:event_txtRegTabliceActionPerformed
+
+    private void txtModelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtModelActionPerformed
+        TableRowSorter<TableModel> sorter = new TableRowSorter<>(((ModelTabeleVozila) jtblVozila.getModel()));
+        sorter.setRowFilter(RowFilter.regexFilter(txtModel.getText()));
+        jtblVozila.setRowSorter(sorter);
+    }//GEN-LAST:event_txtModelActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jtblVozila;
+    private javax.swing.JTextField txtModel;
+    private javax.swing.JTextField txtRegTablice;
     // End of variables declaration//GEN-END:variables
+
+    private void srediFormu() {
+        try {
+            toZahtev = new TransferObjekatZahtev();
+            toZahtev.setOperacija(Operacija.VRATI_VOZILA);
+            Komunikacija.getInstance().posalji(toZahtev);
+
+            toOdgovor = Komunikacija.getInstance().procitaj();
+            List listaVozila = (List) toOdgovor.getRezultat();
+
+            ModelTabeleVozila mtv = new ModelTabeleVozila(listaVozila);
+            jtblVozila.setModel(mtv);
+        } catch (IOException | ClassNotFoundException ex) {
+            System.out.println("Greska: " + ex);
+        }
+    }
 }

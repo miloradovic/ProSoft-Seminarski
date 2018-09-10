@@ -1,5 +1,8 @@
 package so.cenovnik;
 
+import domen.CenovnikOsiguranja;
+import domen.OpstiDomenskiObjekat;
+import java.util.List;
 import so.OpstaSO;
 
 /**
@@ -8,9 +11,14 @@ import so.OpstaSO;
  */
 public class VratiCenovnikOsiguranjaSO extends OpstaSO {
 
+    List<OpstiDomenskiObjekat> listaCenovnik;
+
     @Override
     protected void izvrsiOperaciju(Object obj) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        listaCenovnik = db.pretrazi(new CenovnikOsiguranja());
     }
-    
+
+    public List<OpstiDomenskiObjekat> getCenovnik() {
+        return listaCenovnik;
+    }
 }

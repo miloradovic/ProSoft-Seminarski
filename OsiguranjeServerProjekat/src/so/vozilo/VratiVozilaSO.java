@@ -8,16 +8,20 @@ import so.OpstaSO;
  *
  * @author Darko
  */
-public class UcitajVoziloSO extends OpstaSO {
+public class VratiVozilaSO extends OpstaSO {
 
     List<OpstiDomenskiObjekat> listaVozila;
 
+    public VratiVozilaSO(Object obj) {
+        super(obj);
+    }
+    
     @Override
     protected void izvrsiOperaciju(Object obj) throws Exception {
         listaVozila = db.pretrazi((OpstiDomenskiObjekat) obj);
     }
 
-    public OpstiDomenskiObjekat ucitajVozilo() {
-        return listaVozila.get(0);
+    public List<OpstiDomenskiObjekat> getListaVozila() {
+        return listaVozila;
     }
 }

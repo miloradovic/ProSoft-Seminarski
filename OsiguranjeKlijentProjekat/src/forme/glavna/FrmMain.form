@@ -11,18 +11,19 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jmnItemUnosPolise">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Unos polise"/>
+                <Property name="text" type="java.lang.String" value="Ugovaranje polise"/>
               </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jmnItemRaskidanjePolise">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Raskidanje polise"/>
-              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jmnItemUnosPoliseActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jmnItemPretragaPolise">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Pretraga polise"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jmnItemPretragaPoliseActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -39,20 +40,13 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jmnItemUnosKlijentaActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jmnItemIzmenaKlijenta">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Izmena klijenta"/>
-              </Properties>
-            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jmnItemPretragaKlijenta">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Pretraga klijenta"/>
               </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="imnItemBrisanjeKlijenta">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Brisanje klijenta"/>
-              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jmnItemPretragaKlijentaActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -100,10 +94,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="lblStatus" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="lblReferent" alignment="0" min="-2" max="-2" attributes="0"/>
-              </Group>
+              <Component id="lblReferent" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="330" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -111,21 +102,14 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace pref="245" max="32767" attributes="0"/>
               <Component id="lblReferent" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="216" max="32767" attributes="0"/>
-              <Component id="lblStatus" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JLabel" name="lblStatus">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="..."/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JLabel" name="lblReferent">
       <Properties>
         <Property name="text" type="java.lang.String" value="Referent: "/>

@@ -90,10 +90,7 @@ public class Referent implements OpstiDomenskiObjekat {
 
     @Override
     public String pretraga() {
-        if (user != null && pass != null) {
-            return "SELECT * FROM Referent WHERE KorisnickoIme = '" + user + "' AND KorisnickaSifra = '" + pass + "'";
-        }
-        return "SELECT * FROM Referent";
+        return String.format("SELECT * FROM Referent WHERE KorisnickoIme = '%s' AND KorisnickaSifra = '%s'", user, pass);
     }
 
     @Override
@@ -102,10 +99,10 @@ public class Referent implements OpstiDomenskiObjekat {
         try {
             while (rs.next()) {
                 lista.add(new Referent(
-                        rs.getInt("referentID"), 
-                        rs.getString("Ime"), 
-                        rs.getString("Prezime"), 
-                        rs.getString("KorisnickoIme"), 
+                        rs.getInt("ReferentID"),
+                        rs.getString("Ime"),
+                        rs.getString("Prezime"),
+                        rs.getString("KorisnickoIme"),
                         rs.getString("KorisnickaSifra")));
             }
         } catch (SQLException e) {

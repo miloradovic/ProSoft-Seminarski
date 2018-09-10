@@ -1,6 +1,8 @@
 package domen;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -83,17 +85,21 @@ public class Klijent implements OpstiDomenskiObjekat {
 
     @Override
     public String unos() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return String.format(
+                "INSERT INTO klijent VALUES (%d, '%s', '%s', '%s', '%s', %d)",
+                klijentId, ime, prezime, jmbg, ulicaBroj, mesto.getPtt());
     }
 
     @Override
     public String izmena() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return String.format(
+                "UPDATE klijent SET Ime = '%s', Prezime = '%s', UlicaBroj = '%s', Ptt = $d WHERE KlijentID = %d",
+                ime, prezime, ulicaBroj, mesto.getPtt(), klijentId);
     }
 
     @Override
     public String brisanje() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return String.format("DELETE FROM klijent WHERE KlijentID = %d", klijentId);
     }
 
     @Override
@@ -103,7 +109,21 @@ public class Klijent implements OpstiDomenskiObjekat {
 
     @Override
     public List<OpstiDomenskiObjekat> ucitaj(ResultSet rs) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<OpstiDomenskiObjekat> lista = new ArrayList<>();
+        try {
+            while (rs.next()) {
+                lista.add(new Klijent(
+                        rs.getInt("KlijentID"),
+                        rs.getString("Ime"),
+                        rs.getString("Prezime"),
+                        rs.getString("JMBG"),
+                        rs.getString("UlicaBroj"),
+                        new Mesto(rs.getInt("Ptt"), rs.getString("Naziv"))));
+            }
+        } catch (SQLException e) {
+            System.out.println("Greska prilikom ucitavanja: " + e);
+        }
+        return lista;
     }
 
 }

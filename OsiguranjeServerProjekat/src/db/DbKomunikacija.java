@@ -97,7 +97,7 @@ public class DbKomunikacija {
             sqlStatement.close();
             return list;
         } catch (Exception e) {
-            throw new Exception("Neuspesna pretraga: ", e);
+            throw new Exception("Neuspesna pretraga: " + e);
         }
     }
 

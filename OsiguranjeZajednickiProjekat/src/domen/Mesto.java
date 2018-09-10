@@ -2,7 +2,7 @@ package domen;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,7 +40,7 @@ public class Mesto implements OpstiDomenskiObjekat {
 
     @Override
     public String toString() {
-        return naziv + " [" + ptt + "]";
+        return naziv;
     }
 
     @Override
@@ -65,16 +65,16 @@ public class Mesto implements OpstiDomenskiObjekat {
 
     @Override
     public List<OpstiDomenskiObjekat> ucitaj(ResultSet rs) throws Exception {
+        List<OpstiDomenskiObjekat> lo = new ArrayList<>();
         try {
-            List<OpstiDomenskiObjekat> lo = new LinkedList<>();
             while (rs.next()) {
                 int pttLocal = rs.getInt("Ptt");
                 String nazivLocal = rs.getString("Naziv");
                 lo.add(new Mesto(pttLocal, nazivLocal));
             }
-            return lo;
         } catch (SQLException ex) {
             throw ex;
         }
+        return lo;
     }
 }

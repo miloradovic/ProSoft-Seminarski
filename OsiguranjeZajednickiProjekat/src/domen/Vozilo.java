@@ -1,6 +1,11 @@
 package domen;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.Year;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,12 +20,12 @@ public class Vozilo implements OpstiDomenskiObjekat{
     private String marka;
     private String model;
     private int snagaMotora;
-    private Date godinaProizvodnje;
+    private Year godinaProizvodnje;
 
     public Vozilo() {
     }
 
-    public Vozilo(int voziloId, String regTablice, String marka, String model, int snagaMotora, Date godinaProizvodnje) {
+    public Vozilo(int voziloId, String regTablice, String marka, String model, int snagaMotora, Year godinaProizvodnje) {
         this.voziloId = voziloId;
         this.regTablice = regTablice;
         this.marka = marka;
@@ -69,11 +74,11 @@ public class Vozilo implements OpstiDomenskiObjekat{
         this.snagaMotora = snagaMotora;
     }
 
-    public Date getGodinaProizvodnje() {
+    public Year getGodinaProizvodnje() {
         return godinaProizvodnje;
     }
 
-    public void setGodinaProizvodnje(Date godinaProizvodnje) {
+    public void setGodinaProizvodnje(Year godinaProizvodnje) {
         this.godinaProizvodnje = godinaProizvodnje;
     }
 
@@ -99,12 +104,32 @@ public class Vozilo implements OpstiDomenskiObjekat{
 
     @Override
     public String pretraga() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (regTablice != null) {
+            return "SELECT * FROM Vozilo WHERE RegTablice = '" + regTablice + "'";
+        }
+        if (model != null) {
+            return "SELECT * FROM Vozilo WHERE Model = '" + model + "'";
+        }
+        return "SELECT * FROM Vozilo";
     }
 
     @Override
     public List<OpstiDomenskiObjekat> ucitaj(ResultSet rs) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<OpstiDomenskiObjekat> lista = new ArrayList<>();
+        try {
+            while (rs.next()) {
+                lista.add(new Vozilo(
+                        rs.getInt("VoziloID"), 
+                        rs.getString("RegTablice"), 
+                        rs.getString("Marka"), 
+                        rs.getString("Model"), 
+                        rs.getInt("SnagaMotora"),
+                        Year.parse(rs.getString("GodinaProizvodnje"), DateTimeFormatter.ISO_DATE)));
+            }
+        } catch (SQLException e) {
+            System.out.println("Greska prilikom ucitavanja: " + e);
+        }
+        return lista;
     }
     
 }

@@ -1,5 +1,6 @@
 package so.mesto;
 
+import domen.Mesto;
 import domen.OpstiDomenskiObjekat;
 import java.util.List;
 import so.OpstaSO;
@@ -14,7 +15,7 @@ public class VratiMestaSO extends OpstaSO {
 
     @Override
     protected void izvrsiOperaciju(Object obj) throws Exception {
-        listaMesta = db.pretrazi((OpstiDomenskiObjekat) obj);
+        listaMesta = db.pretrazi(new Mesto());
     }
 
     public List<OpstiDomenskiObjekat> getListaMesta() {

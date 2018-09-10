@@ -1,5 +1,8 @@
 package so.klijent;
 
+import domen.Klijent;
+import domen.OpstiDomenskiObjekat;
+import java.util.List;
 import so.OpstaSO;
 
 /**
@@ -8,9 +11,14 @@ import so.OpstaSO;
  */
 public class VratiKlijenteSO extends OpstaSO {
 
+    List<OpstiDomenskiObjekat> listaKlijenata;
+    
     @Override
     protected void izvrsiOperaciju(Object obj) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        listaKlijenata = db.pretrazi(new Klijent());
     }
     
+    public List<OpstiDomenskiObjekat> getListaKlijenata() {
+        return listaKlijenata;
+    }
 }
