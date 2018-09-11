@@ -56,6 +56,11 @@ public class FrmGlavna extends javax.swing.JFrame {
         lblStatus.setText("Server je ugasen...");
 
         btnStop.setText("Stop");
+        btnStop.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnStopActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -106,12 +111,13 @@ public class FrmGlavna extends javax.swing.JFrame {
     }//GEN-LAST:event_btnPodesavanjeActionPerformed
 
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
-        server = new Server();
+        server = new Server(this);
         server.start();
-        lblStatus.setText("Server je aktivan");
-        btnStart.setVisible(false);
-        btnStop.setVisible(true);
     }//GEN-LAST:event_btnStartActionPerformed
+
+    private void btnStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStopActionPerformed
+        server.interrupt();
+    }//GEN-LAST:event_btnStopActionPerformed
 
     /**
      * @param args the command line arguments
@@ -154,4 +160,17 @@ public class FrmGlavna extends javax.swing.JFrame {
     private javax.swing.JButton btnStop;
     private javax.swing.JLabel lblStatus;
     // End of variables declaration//GEN-END:variables
+
+    public void serverPokrenut() {
+        lblStatus.setText("Server je pokrenut.");
+        btnStart.setVisible(false);
+        btnStop.setVisible(true);
+    }
+
+    public void serverNijePokrenut() {
+        lblStatus.setText("Server nije pokrenut.");
+        btnStart.setVisible(true);
+        btnStop.setVisible(false);
+    }
+    
 }

@@ -81,6 +81,8 @@ public class NitKlijent extends Thread {
                         OpstiDomenskiObjekat odoUcitaj = Kontroler.getInstance().ucitajVozilo(vozilo);
                         break;
                     case Operacija.KREIRAJ_NOVU_POLISU:
+                        int j = Kontroler.getInstance().kreirajNovuPolisu();
+                        toOdgovor.setRezultat(j);
                         break;
                     case Operacija.ZAPAMTI_POLISU:
                         break;

@@ -17,24 +17,27 @@ public class Polisa implements OpstiDomenskiObjekat {
     private int premijskiStepen;
     private Date datumUgovaranja;
     private Date datumRaskidanja;
-    private String tip;
     private Klijent klijent;
     private Vozilo vozilo;
-    private Referent referent;
+    private Referent referentUgovaranje;
+    private Referent referentRaskidanje;
+    private List<StavkaPolise> listaStavki;
 
     public Polisa() {
+        listaStavki = new ArrayList<>();
     }
 
-    public Polisa(int polisaId, double ukupno, int premijskiStepen, Date datumUgovaranja, Date datumRaskidanja, String tip, Klijent klijent, Vozilo vozilo, Referent referent) {
+    public Polisa(int polisaId, double ukupno, int premijskiStepen, Date datumUgovaranja, Date datumRaskidanja, Klijent klijent, Vozilo vozilo, Referent referentUgovaranje, Referent referentRaskidanje) {
         this.polisaId = polisaId;
         this.ukupno = ukupno;
         this.premijskiStepen = premijskiStepen;
         this.datumUgovaranja = datumUgovaranja;
         this.datumRaskidanja = datumRaskidanja;
-        this.tip = tip;
         this.klijent = klijent;
         this.vozilo = vozilo;
-        this.referent = referent;
+        this.referentUgovaranje = referentUgovaranje;
+        this.referentRaskidanje = referentRaskidanje;
+        listaStavki = new ArrayList<>();
     }
 
     public int getPolisaId() {
@@ -77,14 +80,55 @@ public class Polisa implements OpstiDomenskiObjekat {
         this.datumRaskidanja = datumRaskidanja;
     }
 
+    public Klijent getKlijent() {
+        return klijent;
+    }
+
+    public void setKlijent(Klijent klijent) {
+        this.klijent = klijent;
+    }
+
+    public Vozilo getVozilo() {
+        return vozilo;
+    }
+
+    public void setVozilo(Vozilo vozilo) {
+        this.vozilo = vozilo;
+    }
+
+    public Referent getReferentUgovaranje() {
+        return referentUgovaranje;
+    }
+
+    public void setReferentUgovaranje(Referent referentUgovaranje) {
+        this.referentUgovaranje = referentUgovaranje;
+    }
+
+    public Referent getReferentRaskidanje() {
+        return referentRaskidanje;
+    }
+
+    public void setReferentRaskidanje(Referent referentRaskidanje) {
+        this.referentRaskidanje = referentRaskidanje;
+    }
+
+    public List<StavkaPolise> getListaStavki() {
+        return listaStavki;
+    }
+
+    public void setListaStavki(List<StavkaPolise> listaStavki) {
+        this.listaStavki = listaStavki;
+    }
+
     @Override
     public String unos() {
         return String.format(
-                "INSERT INTO polisa VALUES (%d, %f, %d, '%date', '%date', '%s', %d, %d, %d)",
-                polisaId, ukupno, premijskiStepen, datumUgovaranja, datumRaskidanja, tip,
+                "INSERT INTO polisa VALUES (%d, %f, %d, '%date', '%date', '%s', %d, %d, %d, %d)",
+                polisaId, ukupno, premijskiStepen, datumUgovaranja, datumRaskidanja,
                 klijent.getKlijentId(),
                 vozilo.getVoziloId(),
-                referent.getReferentId());
+                referentUgovaranje.getReferentId(),
+                referentRaskidanje.getReferentId());
     }
 
     @Override
@@ -118,9 +162,9 @@ public class Polisa implements OpstiDomenskiObjekat {
                         rs.getInt("PremijskiStepen"),
                         rs.getDate("DatumUgovaranja"),
                         rs.getDate("DatumRaskidanja"),
-                        rs.getString("Tip"),
                         new Klijent(),
                         new Vozilo(),
+                        new Referent(),
                         new Referent()));
             }
         } catch (SQLException e) {

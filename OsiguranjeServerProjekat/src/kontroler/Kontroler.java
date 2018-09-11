@@ -6,10 +6,12 @@ import domen.OpstiDomenskiObjekat;
 import domen.Vozilo;
 import java.util.List;
 import so.OpstaSO;
+import so.cenovnik.VratiCenovnikOsiguranjaSO;
 import so.klijent.KreirajNovogKlijentaSO;
 import so.klijent.VratiKlijenteSO;
 import so.klijent.ZapamtiKlijentaSO;
 import so.mesto.VratiMestaSO;
+import so.polisa.KreirajNovuPolisuSO;
 import so.referent.NadjiReferentaSO;
 import so.vozilo.VratiVozilaSO;
 
@@ -62,8 +64,10 @@ public class Kontroler {
         return ((VratiKlijenteSO) vratiKlijenteSO).getListaKlijenata();
     }
 
-    public List<OpstiDomenskiObjekat> vratiCenovnik() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<OpstiDomenskiObjekat> vratiCenovnik() throws Exception {
+        OpstaSO vratiCenovnik = new VratiCenovnikOsiguranjaSO();
+        vratiCenovnik.izvrsenjeSO();
+        return ((VratiCenovnikOsiguranjaSO) vratiCenovnik).getCenovnik();
     }
 
     public List<OpstiDomenskiObjekat> vratiVozila() throws Exception {
@@ -90,5 +94,11 @@ public class Kontroler {
 
     public OpstiDomenskiObjekat ucitajVozilo(Vozilo vozilo) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public int kreirajNovuPolisu() throws Exception {
+        OpstaSO kreirajNovuPolisu = new KreirajNovuPolisuSO();
+        kreirajNovuPolisu.izvrsenjeSO();
+        return ((KreirajNovuPolisuSO) kreirajNovuPolisu).getNovuPolisu();
     }
 }

@@ -1,9 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package forme.polisa;
+
+import forme.polisa.model.ModelTabelePolise;
+import java.io.IOException;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import komunikacija.Komunikacija;
+import transfer.Operacija;
+import transfer.TransferObjekatOdgovor;
+import transfer.TransferObjekatZahtev;
 
 /**
  *
@@ -11,6 +15,8 @@ package forme.polisa;
  */
 public class FrmPolisa extends javax.swing.JPanel {
 
+    TransferObjekatZahtev toZahtev;
+    TransferObjekatOdgovor toOdgovor;
     /**
      * Creates new form FrmPolisa
      */
@@ -27,41 +33,201 @@ public class FrmPolisa extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jtblStavke = new javax.swing.JTable();
+        btnSacuvaj = new javax.swing.JButton();
+        btnOdustani = new javax.swing.JButton();
+        btnNovaPolisa = new javax.swing.JButton();
+        txtPolisaID = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        cmbKlijent = new javax.swing.JComboBox();
+        cmbVozilo = new javax.swing.JComboBox();
+        jLabel3 = new javax.swing.JLabel();
+        cmbTipOsiguranja = new javax.swing.JComboBox();
+        btnDodaj = new javax.swing.JButton();
+        btnObrisi = new javax.swing.JButton();
 
-        jLabel1.setText("Polisa");
+        jtblStavke.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jtblStavke);
 
-        jButton1.setText("Polisa");
+        btnSacuvaj.setText("Sacuvaj");
+        btnSacuvaj.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSacuvajActionPerformed(evt);
+            }
+        });
+
+        btnOdustani.setText("Odustani");
+        btnOdustani.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOdustaniActionPerformed(evt);
+            }
+        });
+
+        btnNovaPolisa.setText("Kreiraj novu polisu");
+        btnNovaPolisa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovaPolisaActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Klijent: ");
+
+        jLabel2.setText("Vozilo: ");
+
+        cmbKlijent.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        cmbVozilo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel3.setText("Tip osiguranja: ");
+
+        cmbTipOsiguranja.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        btnDodaj.setText("Dodaj stavku");
+        btnDodaj.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDodajActionPerformed(evt);
+            }
+        });
+
+        btnObrisi.setText("Obrisi stavku");
+        btnObrisi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnObrisiActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(123, 123, 123)
-                        .addComponent(jLabel1))
+                        .addComponent(btnSacuvaj)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnOdustani))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(109, 109, 109)
-                        .addComponent(jButton1)))
-                .addContainerGap(226, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnNovaPolisa)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtPolisaID, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(48, 48, 48)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnDodaj)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                                        .addComponent(btnObrisi))
+                                    .addComponent(cmbKlijent, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(cmbVozilo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(cmbTipOsiguranja, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(104, 104, 104)
-                .addComponent(jLabel1)
-                .addGap(29, 29, 29)
-                .addComponent(jButton1)
-                .addContainerGap(126, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnNovaPolisa)
+                    .addComponent(txtPolisaID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(cmbKlijent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(cmbVozilo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(cmbTipOsiguranja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnDodaj)
+                    .addComponent(btnObrisi))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSacuvaj)
+                    .addComponent(btnOdustani))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnNovaPolisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovaPolisaActionPerformed
+        try {
+        toZahtev = new TransferObjekatZahtev();
+        toZahtev.setOperacija(Operacija.KREIRAJ_NOVU_POLISU);
+        Komunikacija.getInstance().posalji(toZahtev);
+        toOdgovor = Komunikacija.getInstance().procitaj();
+        
+        int i = (int) toOdgovor.getRezultat();
+        txtPolisaID.setText(i + "");
+        } catch (IOException | ClassNotFoundException ex) {
+            System.out.println("Greska: " + ex);
+        }  
+    }//GEN-LAST:event_btnNovaPolisaActionPerformed
+
+    private void btnDodajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDodajActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDodajActionPerformed
+
+    private void btnSacuvajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSacuvajActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSacuvajActionPerformed
+
+    private void btnOdustaniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOdustaniActionPerformed
+        SwingUtilities.getWindowAncestor(this).dispose();
+    }//GEN-LAST:event_btnOdustaniActionPerformed
+
+    private void btnObrisiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnObrisiActionPerformed
+        int index = jtblStavke.getSelectedRow();
+        if (index != -1) {
+            ModelTabelePolise model = (ModelTabelePolise) jtblStavke.getModel();
+            System.out.println("Nije obrisana stavka.");
+        } else {
+            JOptionPane.showMessageDialog(this, "Odaberite stavku koju zelite da obrisete!");
+        }
+    }//GEN-LAST:event_btnObrisiActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnDodaj;
+    private javax.swing.JButton btnNovaPolisa;
+    private javax.swing.JButton btnObrisi;
+    private javax.swing.JButton btnOdustani;
+    private javax.swing.JButton btnSacuvaj;
+    private javax.swing.JComboBox cmbKlijent;
+    private javax.swing.JComboBox cmbTipOsiguranja;
+    private javax.swing.JComboBox cmbVozilo;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jtblStavke;
+    private javax.swing.JTextField txtPolisaID;
     // End of variables declaration//GEN-END:variables
 }
