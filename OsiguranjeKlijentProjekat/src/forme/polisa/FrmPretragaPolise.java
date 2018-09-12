@@ -1,6 +1,15 @@
 package forme.polisa;
 
+import domen.Polisa;
+import forme.polisa.model.ModelTabelePolisa;
+import java.io.IOException;
+import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import komunikacija.Komunikacija;
+import transfer.Operacija;
+import transfer.TransferObjekatOdgovor;
+import transfer.TransferObjekatZahtev;
 
 /**
  *
@@ -8,11 +17,15 @@ import javax.swing.SwingUtilities;
  */
 public class FrmPretragaPolise extends javax.swing.JPanel {
 
+    TransferObjekatZahtev toZahtev;
+    TransferObjekatOdgovor toOdgovor;
+    
     /**
      * Creates new form FrmPretragaPolise
      */
     public FrmPretragaPolise() {
         initComponents();
+        srediFormu();
     }
 
     /**
@@ -50,6 +63,11 @@ public class FrmPretragaPolise extends javax.swing.JPanel {
         jScrollPane1.setViewportView(jtblPolisa);
 
         btnIzmeni.setText("Izmeni");
+        btnIzmeni.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIzmeniActionPerformed(evt);
+            }
+        });
 
         btnOdustani.setText("Odustani");
         btnOdustani.addActionListener(new java.awt.event.ActionListener() {
@@ -102,6 +120,20 @@ public class FrmPretragaPolise extends javax.swing.JPanel {
         SwingUtilities.getWindowAncestor(this).dispose();
     }//GEN-LAST:event_btnOdustaniActionPerformed
 
+    private void btnIzmeniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIzmeniActionPerformed
+        int index = jtblPolisa.getSelectedRow();
+        if (index != -1) {
+            ModelTabelePolisa model = (ModelTabelePolisa) jtblPolisa.getModel();
+            
+            // TODO
+            JOptionPane.showMessageDialog(this, "TODO");
+        } else {
+            JOptionPane.showMessageDialog(this, "Odaberite stavku koju zelite da izmenite!");
+        }
+        
+        // SwingUtilities.getWindowAncestor(this).dispose();
+    }//GEN-LAST:event_btnIzmeniActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIzmeni;
@@ -112,4 +144,20 @@ public class FrmPretragaPolise extends javax.swing.JPanel {
     private javax.swing.JTable jtblPolisa;
     private javax.swing.JTextField txtPretraga;
     // End of variables declaration//GEN-END:variables
+
+    private void srediFormu() {
+        toZahtev = new TransferObjekatZahtev();
+        toZahtev.setOperacija(Operacija.PRETRAZI_POLISE);
+        
+        try {
+            Komunikacija.getInstance().posalji(toZahtev);
+            toOdgovor = Komunikacija.getInstance().procitaj();
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Greska: " + e);
+        }
+        
+        List<Polisa> listaP = (List<Polisa>) toOdgovor.getRezultat();
+        ModelTabelePolisa mtp = new ModelTabelePolisa(listaP);
+        jtblPolisa.setModel(mtp);
+    }
 }

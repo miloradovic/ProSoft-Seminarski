@@ -11,6 +11,7 @@ import transfer.Operacija;
 import transfer.TransferObjekatOdgovor;
 import transfer.TransferObjekatZahtev;
 import domen.OpstiDomenskiObjekat;
+import domen.Polisa;
 import domen.Vozilo;
 
 /**
@@ -85,6 +86,9 @@ public class NitKlijent extends Thread {
                         toOdgovor.setRezultat(j);
                         break;
                     case Operacija.ZAPAMTI_POLISU:
+                        Polisa p = (Polisa) toZahtev.getParametar();
+                        Kontroler.getInstance().zapamtiPolisu(p);
+                        toOdgovor.setPoruka("Polisa je sacuvana.");
                         break;
                     case Operacija.PRETRAZI_POLISE:
                         break;

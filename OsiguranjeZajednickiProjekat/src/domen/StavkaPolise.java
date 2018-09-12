@@ -63,10 +63,41 @@ public class StavkaPolise implements OpstiDomenskiObjekat {
         return naziv;
     }
 
+    public double getKoeficijent(int i) {
+        switch (i) {
+            case 1:
+                return 0.85;
+            case 2:
+                return 0.90;
+            case 3:
+                return 0.95;
+            case 4:
+                return 1;
+            case 5:
+                return 1.15;
+            case 6:
+                return 1.30;
+            case 7:
+                return 1.50;
+            case 8:
+                return 1.70;
+            case 9:
+                return 1.90;
+            case 10:
+                return 2.10;
+            case 11:
+                return 2.30;
+            case 12:
+                return 2.50;
+            default:
+                return 0.0;
+        }
+    }
+
     @Override
     public String unos() {
         return String.format(
-                "INSERT INTO stavka_polise VALUES (%d, %s, %f, %d)", 
+                "INSERT INTO stavka_polise VALUES (%d, %s, %f, %d)",
                 rb, naziv, cena, cenovnik.getCenovnikId());
     }
 

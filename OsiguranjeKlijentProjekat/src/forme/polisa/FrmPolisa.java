@@ -1,13 +1,25 @@
 package forme.polisa;
 
-import forme.polisa.model.ModelTabelePolise;
+import domen.Klijent;
+import domen.Polisa;
+import domen.Referent;
+import domen.StavkaPolise;
+import domen.TipOsiguranja;
+import domen.Vozilo;
+import forme.polisa.model.ModelTabeleStavkaPolise;
+import java.awt.Frame;
+import java.awt.Window;
 import java.io.IOException;
+import java.util.Date;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import komunikacija.Komunikacija;
 import transfer.Operacija;
 import transfer.TransferObjekatOdgovor;
 import transfer.TransferObjekatZahtev;
+import util.Sesija;
 
 /**
  *
@@ -17,11 +29,14 @@ public class FrmPolisa extends javax.swing.JPanel {
 
     TransferObjekatZahtev toZahtev;
     TransferObjekatOdgovor toOdgovor;
+    int premijskiStepen = -1;
+
     /**
      * Creates new form FrmPolisa
      */
     public FrmPolisa() {
         initComponents();
+        srediFormu();
     }
 
     /**
@@ -121,27 +136,34 @@ public class FrmPolisa extends javax.swing.JPanel {
                         .addComponent(btnOdustani))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnNovaPolisa)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtPolisaID, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(48, 48, 48)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel1)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel3))
-                                .addGap(18, 18, 18)
+                                    .addComponent(btnNovaPolisa)
+                                    .addComponent(jLabel2))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(layout.createSequentialGroup()
+                                        .addGap(30, 30, 30)
                                         .addComponent(btnDodaj)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                                        .addGap(48, 48, 48)
                                         .addComponent(btnObrisi))
-                                    .addComponent(cmbKlijent, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(cmbVozilo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(cmbTipOsiguranja, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(cmbKlijent, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(txtPolisaID, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(0, 0, Short.MAX_VALUE))))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(cmbVozilo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(50, 50, 50)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmbTipOsiguranja, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -157,17 +179,17 @@ public class FrmPolisa extends javax.swing.JPanel {
                     .addComponent(cmbKlijent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(cmbVozilo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbVozilo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(cmbTipOsiguranja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                    .addComponent(cmbTipOsiguranja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnDodaj)
                     .addComponent(btnObrisi))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -179,24 +201,89 @@ public class FrmPolisa extends javax.swing.JPanel {
 
     private void btnNovaPolisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovaPolisaActionPerformed
         try {
-        toZahtev = new TransferObjekatZahtev();
-        toZahtev.setOperacija(Operacija.KREIRAJ_NOVU_POLISU);
-        Komunikacija.getInstance().posalji(toZahtev);
-        toOdgovor = Komunikacija.getInstance().procitaj();
-        
-        int i = (int) toOdgovor.getRezultat();
-        txtPolisaID.setText(i + "");
+            toZahtev = new TransferObjekatZahtev();
+            toZahtev.setOperacija(Operacija.KREIRAJ_NOVU_POLISU);
+            Komunikacija.getInstance().posalji(toZahtev);
+            toOdgovor = Komunikacija.getInstance().procitaj();
+
+            int i = (int) toOdgovor.getRezultat();
+            txtPolisaID.setText(i + "");
         } catch (IOException | ClassNotFoundException ex) {
             System.out.println("Greska: " + ex);
-        }  
+        }
     }//GEN-LAST:event_btnNovaPolisaActionPerformed
 
     private void btnDodajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDodajActionPerformed
-        // TODO add your handling code here:
+        TipOsiguranja to = (TipOsiguranja) cmbTipOsiguranja.getSelectedItem();
+        switch (to) {
+            case OBAVEZNO:
+                Sesija.getInstance().put("obavezno", to);
+                // JDialog Auto-odgovornost
+                FrmObavezno obavezno = new FrmObavezno(getParentFrame(), true);
+                obavezno.setForma(this);
+                obavezno.setVisible(true);
+                break;
+            case KASKO:
+                Sesija.getInstance().put("kasko", to);
+                // JDialog Kasko
+                FrmKasko kasko = new FrmKasko(getParentFrame(), true);
+                kasko.setForma(this);
+                kasko.setVisible(true);
+                break;
+            case MINI_KASKO:
+                Sesija.getInstance().put("kasko", to);
+                // JDialog Mini-kasko
+                FrmKasko miniKasko = new FrmKasko(getParentFrame(), true);
+                miniKasko.setForma(this);
+                miniKasko.setVisible(true);
+                break;
+            case ZELENA_KARTA:
+                dodajStavku(new StavkaPolise(-1, to.toString(), 2500.00, null), -1);
+                break;
+            case AUTO_NEZGODA:
+                dodajStavku(new StavkaPolise(-1, to.toString(), 9800.00, null), -1);
+                break;
+            case POMOC_NA_PUTU:
+                dodajStavku(new StavkaPolise(-1, to.toString(), 2500.00, null), -1);
+                break;
+            default:
+                throw new AssertionError();
+        }
     }//GEN-LAST:event_btnDodajActionPerformed
 
     private void btnSacuvajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSacuvajActionPerformed
-        // TODO add your handling code here:
+        if (txtPolisaID.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Niste napravili novu polisu!");
+            return;
+        }
+        ModelTabeleStavkaPolise mtsp = (ModelTabeleStavkaPolise) jtblStavke.getModel();
+        if (mtsp.getRowCount() <= 0) {
+            JOptionPane.showMessageDialog(this, "Potrebno je da unesete minimum jednu stavku!");
+            return;
+        }
+
+        int i = Integer.parseInt(txtPolisaID.getText());
+        Klijent k = (Klijent) cmbKlijent.getSelectedItem();
+        Vozilo v = (Vozilo) cmbVozilo.getSelectedItem();
+        Polisa p = mtsp.getPolisa();
+        p.setPolisaId(i);
+        p.setKlijent(k);
+        p.setVozilo(v);
+        p.setReferentUgovaranje((Referent) Sesija.getInstance().get("referent"));
+        p.setDatumUgovaranja(new Date());
+
+        toZahtev = new TransferObjekatZahtev(Operacija.ZAPAMTI_POLISU, p);
+        try {
+            Komunikacija.getInstance().posalji(toZahtev);
+            toOdgovor = Komunikacija.getInstance().procitaj();
+        } catch (IOException | ClassNotFoundException ex) {
+            System.out.println("Greska: " + ex);
+        }
+        if (toOdgovor.getIzuzetak() != null) {
+            JOptionPane.showMessageDialog(this, toOdgovor.getIzuzetak());
+            return;
+        }
+        JOptionPane.showMessageDialog(this, toOdgovor.getPoruka());
     }//GEN-LAST:event_btnSacuvajActionPerformed
 
     private void btnOdustaniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOdustaniActionPerformed
@@ -206,8 +293,8 @@ public class FrmPolisa extends javax.swing.JPanel {
     private void btnObrisiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnObrisiActionPerformed
         int index = jtblStavke.getSelectedRow();
         if (index != -1) {
-            ModelTabelePolise model = (ModelTabelePolise) jtblStavke.getModel();
-            System.out.println("Nije obrisana stavka.");
+            ModelTabeleStavkaPolise model = (ModelTabeleStavkaPolise) jtblStavke.getModel();
+            model.obrisiStavku(index);
         } else {
             JOptionPane.showMessageDialog(this, "Odaberite stavku koju zelite da obrisete!");
         }
@@ -230,4 +317,57 @@ public class FrmPolisa extends javax.swing.JPanel {
     private javax.swing.JTable jtblStavke;
     private javax.swing.JTextField txtPolisaID;
     // End of variables declaration//GEN-END:variables
+
+    private void srediFormu() {
+        ModelTabeleStavkaPolise mtsp = new ModelTabeleStavkaPolise(new Polisa());
+        jtblStavke.setModel(mtsp);
+
+        // Ucitaj klijente
+        toZahtev = new TransferObjekatZahtev();
+        toZahtev.setOperacija(Operacija.VRATI_KLIJENTE);
+        try {
+            Komunikacija.getInstance().posalji(toZahtev);
+            toOdgovor = Komunikacija.getInstance().procitaj();
+        } catch (IOException | ClassNotFoundException ex) {
+            System.out.println("Greska: " + ex);
+        }
+        List<Klijent> listaK = (List<Klijent>) toOdgovor.getRezultat();
+        cmbKlijent.removeAllItems();
+        for (Klijent klijent : listaK) {
+            cmbKlijent.addItem(klijent);
+        }
+        // Ucitaj vozila
+        toZahtev.setOperacija(Operacija.VRATI_VOZILA);
+        try {
+            Komunikacija.getInstance().posalji(toZahtev);
+            toOdgovor = Komunikacija.getInstance().procitaj();
+        } catch (IOException | ClassNotFoundException ex) {
+            System.out.println("Greska: " + ex);
+        }
+        List<Vozilo> listaV = (List<Vozilo>) toOdgovor.getRezultat();
+        cmbVozilo.removeAllItems();
+        for (Vozilo vozilo : listaV) {
+            cmbVozilo.addItem(vozilo);
+        }
+        // Ucitaj tip osiguranja
+        cmbTipOsiguranja.setModel(new DefaultComboBoxModel<>(TipOsiguranja.values()));
+    }
+
+    public void dodajStavku(StavkaPolise sp, int stepen) {
+        ModelTabeleStavkaPolise mtsp = (ModelTabeleStavkaPolise) jtblStavke.getModel();
+        if (stepen > 0) {
+            premijskiStepen = stepen;
+            mtsp.getPolisa().setPremijskiStepen(stepen);
+        }
+        mtsp.dodajStavku(sp);
+    }
+
+    private Frame getParentFrame() {
+        Window parentWindow = SwingUtilities.windowForComponent(this);
+        Frame parentFrame = null;
+        if (parentWindow instanceof Frame) {
+            parentFrame = (Frame) parentWindow;
+        }
+        return parentFrame;
+    }
 }

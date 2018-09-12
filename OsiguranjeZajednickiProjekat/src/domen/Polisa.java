@@ -120,10 +120,21 @@ public class Polisa implements OpstiDomenskiObjekat {
         this.listaStavki = listaStavki;
     }
 
+    public void pripremiPolisu() {
+        double ukupanIznos = 0;
+        int rb = 1;
+        for (StavkaPolise stavka : getListaStavki()) {
+            ukupanIznos += stavka.getCena();
+            stavka.setRb(rb);
+            rb++;
+        }
+        setUkupno(ukupanIznos);
+    }
+    
     @Override
     public String unos() {
         return String.format(
-                "INSERT INTO polisa VALUES (%d, %f, %d, '%date', '%date', '%s', %d, %d, %d, %d)",
+                "INSERT INTO polisa VALUES (%d, %f, %d, '%date', '%date', '%s', %d, %d, %d)",
                 polisaId, ukupno, premijskiStepen, datumUgovaranja, datumRaskidanja,
                 klijent.getKlijentId(),
                 vozilo.getVoziloId(),
@@ -162,8 +173,8 @@ public class Polisa implements OpstiDomenskiObjekat {
                         rs.getInt("PremijskiStepen"),
                         rs.getDate("DatumUgovaranja"),
                         rs.getDate("DatumRaskidanja"),
-                        new Klijent(),
-                        new Vozilo(),
+                        new Klijent(), 
+                        (Vozilo) new Vozilo().ucitaj(rs),
                         new Referent(),
                         new Referent()));
             }

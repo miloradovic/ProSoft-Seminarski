@@ -3,6 +3,7 @@ package kontroler;
 import db.DbKomunikacija;
 import domen.Klijent;
 import domen.OpstiDomenskiObjekat;
+import domen.Polisa;
 import domen.Vozilo;
 import java.util.List;
 import so.OpstaSO;
@@ -100,5 +101,10 @@ public class Kontroler {
         OpstaSO kreirajNovuPolisu = new KreirajNovuPolisuSO();
         kreirajNovuPolisu.izvrsenjeSO();
         return ((KreirajNovuPolisuSO) kreirajNovuPolisu).getNovuPolisu();
+    }
+
+    public void zapamtiPolisu(Polisa p) throws Exception {
+        OpstaSO zapamtiPolisu = new ZapamtiKlijentaSO(p);
+        zapamtiPolisu.izvrsenjeSO();
     }
 }

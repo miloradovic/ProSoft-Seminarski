@@ -1,6 +1,6 @@
 package forme.polisa.model;
 
-import domen.StavkaPolise;
+import domen.Polisa;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
@@ -8,12 +8,12 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author Darko
  */
-public class ModelTabelePolise extends AbstractTableModel {
+public class ModelTabelePolisa extends AbstractTableModel {
 
-    private List<StavkaPolise> lp;
-    private String[] kolone = {"RB", "Naziv", "Cena"};
+    private List<Polisa> lp;
+    private String[] kolone = {"ID", "Klijent", "Vozilo", "Ukupno", "Premijski stepen", "Datum ugovaranja", "Datum raskidanja"};
 
-    public ModelTabelePolise(List<StavkaPolise> lp) {
+    public ModelTabelePolisa(List<Polisa> lp) {
         this.lp = lp;
     }
 
@@ -32,14 +32,22 @@ public class ModelTabelePolise extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        StavkaPolise sp = lp.get(rowIndex);
+        Polisa sp = lp.get(rowIndex);
         switch (columnIndex) {
             case 0:
-                return sp.getRb();
+                return sp.getPolisaId();
             case 1:
-                return sp.getNaziv();
+                return sp.getKlijent();
             case 2:
-                return sp.getCena();
+                return sp.getVozilo();
+            case 3:
+                return sp.getUkupno();
+            case 4:
+                return sp.getPremijskiStepen();
+            case 5:
+                return sp.getDatumUgovaranja();
+            case 6:
+                return sp.getDatumRaskidanja();
             default:
                 return "n/a";
         }
@@ -49,5 +57,4 @@ public class ModelTabelePolise extends AbstractTableModel {
     public String getColumnName(int column) {
         return kolone[column];
     }
-    
 }

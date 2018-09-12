@@ -60,7 +60,7 @@ public class Mesto implements OpstiDomenskiObjekat {
 
     @Override
     public String pretraga() {
-        return "SELECT * FROM Mesto";
+        return "SELECT * FROM Mesto ORDER BY Naziv ASC";
     }
 
     @Override

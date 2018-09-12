@@ -20,4 +20,14 @@ public enum TipOsiguranja implements Serializable {
     private TipOsiguranja(String osiguranje) {
         this.osiguranje = osiguranje;
     }
+
+    public String getOsiguranje() {
+        return osiguranje;
+    }
+
+    @Override
+    public String toString() {
+        return osiguranje;
+    }
+       
 }

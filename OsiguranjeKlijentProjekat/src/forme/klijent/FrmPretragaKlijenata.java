@@ -6,9 +6,9 @@
 package forme.klijent;
 
 import forme.klijent.model.ModelTabeleKlijent;
-import forme.vozila.model.ModelTabeleVozila;
 import java.io.IOException;
 import java.util.List;
+import javax.swing.SwingUtilities;
 import komunikacija.Komunikacija;
 import transfer.Operacija;
 import transfer.TransferObjekatOdgovor;
@@ -67,6 +67,11 @@ public class FrmPretragaKlijenata extends javax.swing.JPanel {
         btnIzmeni.setText("Izmeni");
 
         btnOdustani.setText("Odustani");
+        btnOdustani.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOdustaniActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -107,6 +112,10 @@ public class FrmPretragaKlijenata extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnOdustaniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOdustaniActionPerformed
+        SwingUtilities.getWindowAncestor(this).dispose();
+    }//GEN-LAST:event_btnOdustaniActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

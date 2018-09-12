@@ -6,6 +6,7 @@ import domen.OpstiDomenskiObjekat;
 import java.io.IOException;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import komunikacija.Komunikacija;
 import transfer.Operacija;
 import transfer.TransferObjekatOdgovor;
@@ -52,6 +53,7 @@ public class FrmUnosKlijenta extends javax.swing.JPanel {
         btnObrisi = new javax.swing.JButton();
         btnKreirajKlijenta = new javax.swing.JButton();
         txtKlijentID = new javax.swing.JTextField();
+        btnOdustani = new javax.swing.JButton();
 
         jLabel1.setText("Ime: ");
 
@@ -93,6 +95,13 @@ public class FrmUnosKlijenta extends javax.swing.JPanel {
             }
         });
 
+        btnOdustani.setText("Odustani");
+        btnOdustani.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOdustaniActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -120,10 +129,11 @@ public class FrmUnosKlijenta extends javax.swing.JPanel {
                         .addComponent(btnIzmeni)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnObrisi)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnOdustani))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnKreirajKlijenta)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(txtKlijentID, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -158,7 +168,8 @@ public class FrmUnosKlijenta extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSacuvaj)
                     .addComponent(btnIzmeni)
-                    .addComponent(btnObrisi))
+                    .addComponent(btnObrisi)
+                    .addComponent(btnOdustani))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -166,6 +177,7 @@ public class FrmUnosKlijenta extends javax.swing.JPanel {
     private void btnSacuvajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSacuvajActionPerformed
         if (isFieldEmpty()) {
             JOptionPane.showMessageDialog(this, "Niste popunili potrebna polja.");
+            return;
         }
         try {
             int klijentId = Integer.parseInt(txtKlijentID.getText());
@@ -212,11 +224,16 @@ public class FrmUnosKlijenta extends javax.swing.JPanel {
         }        
     }//GEN-LAST:event_btnKreirajKlijentaActionPerformed
 
+    private void btnOdustaniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOdustaniActionPerformed
+        SwingUtilities.getWindowAncestor(this).dispose();
+    }//GEN-LAST:event_btnOdustaniActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIzmeni;
     private javax.swing.JButton btnKreirajKlijenta;
     private javax.swing.JButton btnObrisi;
+    private javax.swing.JButton btnOdustani;
     private javax.swing.JButton btnSacuvaj;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
