@@ -15,10 +15,8 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import komunikacija.Komunikacija;
-import transfer.Operacija;
+import kontroler.Kontroler;
 import transfer.TransferObjekatOdgovor;
-import transfer.TransferObjekatZahtev;
 import util.Sesija;
 
 /**
@@ -27,7 +25,6 @@ import util.Sesija;
  */
 public class FrmPolisa extends javax.swing.JPanel {
 
-    TransferObjekatZahtev toZahtev;
     TransferObjekatOdgovor toOdgovor;
     int premijskiStepen = -1;
 
@@ -144,9 +141,7 @@ public class FrmPolisa extends javax.swing.JPanel {
                                     .addComponent(jLabel2))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(30, 30, 30)
-                                        .addComponent(btnDodaj)
-                                        .addGap(48, 48, 48)
+                                        .addGap(183, 183, 183)
                                         .addComponent(btnObrisi))
                                     .addGroup(layout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -163,7 +158,11 @@ public class FrmPolisa extends javax.swing.JPanel {
                         .addGap(50, 50, 50)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmbTipOsiguranja, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnDodaj)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(cmbTipOsiguranja, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -200,13 +199,8 @@ public class FrmPolisa extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNovaPolisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovaPolisaActionPerformed
-        try {
-            toZahtev = new TransferObjekatZahtev();
-            toZahtev.setOperacija(Operacija.KREIRAJ_NOVU_POLISU);
-            Komunikacija.getInstance().posalji(toZahtev);
-            toOdgovor = Komunikacija.getInstance().procitaj();
-
-            int i = (int) toOdgovor.getRezultat();
+        try {            
+            int i = Kontroler.getInstance().kreirajNovuPolisu();
             txtPolisaID.setText(i + "");
         } catch (IOException | ClassNotFoundException ex) {
             System.out.println("Greska: " + ex);
@@ -238,13 +232,13 @@ public class FrmPolisa extends javax.swing.JPanel {
                 miniKasko.setVisible(true);
                 break;
             case ZELENA_KARTA:
-                dodajStavku(new StavkaPolise(-1, to.toString(), 2500.00, null), -1);
+                dodajStavku(new StavkaPolise(-1, -1, to.toString(), 2500.00, null), -1);
                 break;
             case AUTO_NEZGODA:
-                dodajStavku(new StavkaPolise(-1, to.toString(), 9800.00, null), -1);
+                dodajStavku(new StavkaPolise(-1, -1, to.toString(), 9800.00, null), -1);
                 break;
             case POMOC_NA_PUTU:
-                dodajStavku(new StavkaPolise(-1, to.toString(), 2500.00, null), -1);
+                dodajStavku(new StavkaPolise(-1, -1, to.toString(), 2500.00, null), -1);
                 break;
             default:
                 throw new AssertionError();
@@ -269,15 +263,15 @@ public class FrmPolisa extends javax.swing.JPanel {
         p.setPolisaId(i);
         p.setKlijent(k);
         p.setVozilo(v);
-        p.setReferentUgovaranje((Referent) Sesija.getInstance().get("referent"));
+        p.setReferentUgovaranje((Referent) Sesija.getInstance().get("Referent"));
+        p.setReferentRaskidanje(null);
         p.setDatumUgovaranja(new Date());
+        p.setDatumRaskidanja(null);
 
-        toZahtev = new TransferObjekatZahtev(Operacija.ZAPAMTI_POLISU, p);
         try {
-            Komunikacija.getInstance().posalji(toZahtev);
-            toOdgovor = Komunikacija.getInstance().procitaj();
-        } catch (IOException | ClassNotFoundException ex) {
-            System.out.println("Greska: " + ex);
+            toOdgovor = Kontroler.getInstance().zapamtiPolisu(p);
+        } catch (Exception e) {
+            System.out.println("Greska: " + e);
         }
         if (toOdgovor.getIzuzetak() != null) {
             JOptionPane.showMessageDialog(this, toOdgovor.getIzuzetak());
@@ -322,34 +316,22 @@ public class FrmPolisa extends javax.swing.JPanel {
         ModelTabeleStavkaPolise mtsp = new ModelTabeleStavkaPolise(new Polisa());
         jtblStavke.setModel(mtsp);
 
-        // Ucitaj klijente
-        toZahtev = new TransferObjekatZahtev();
-        toZahtev.setOperacija(Operacija.VRATI_KLIJENTE);
         try {
-            Komunikacija.getInstance().posalji(toZahtev);
-            toOdgovor = Komunikacija.getInstance().procitaj();
-        } catch (IOException | ClassNotFoundException ex) {
-            System.out.println("Greska: " + ex);
+            List<Klijent> listaK = Kontroler.getInstance().vratiKlijente();
+            List<Vozilo> listaV = Kontroler.getInstance().vratiVozila();
+
+            cmbKlijent.removeAllItems();
+            for (Klijent klijent : listaK) {
+                cmbKlijent.addItem(klijent);
+            }
+            cmbVozilo.removeAllItems();
+            for (Vozilo vozilo : listaV) {
+                cmbVozilo.addItem(vozilo);
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Greska: " + e);
         }
-        List<Klijent> listaK = (List<Klijent>) toOdgovor.getRezultat();
-        cmbKlijent.removeAllItems();
-        for (Klijent klijent : listaK) {
-            cmbKlijent.addItem(klijent);
-        }
-        // Ucitaj vozila
-        toZahtev.setOperacija(Operacija.VRATI_VOZILA);
-        try {
-            Komunikacija.getInstance().posalji(toZahtev);
-            toOdgovor = Komunikacija.getInstance().procitaj();
-        } catch (IOException | ClassNotFoundException ex) {
-            System.out.println("Greska: " + ex);
-        }
-        List<Vozilo> listaV = (List<Vozilo>) toOdgovor.getRezultat();
-        cmbVozilo.removeAllItems();
-        for (Vozilo vozilo : listaV) {
-            cmbVozilo.addItem(vozilo);
-        }
-        // Ucitaj tip osiguranja
+
         cmbTipOsiguranja.setModel(new DefaultComboBoxModel<>(TipOsiguranja.values()));
     }
 

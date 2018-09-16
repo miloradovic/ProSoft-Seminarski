@@ -1,5 +1,6 @@
 package db;
 
+import util.SettingsLoader;
 import domen.OpstiDomenskiObjekat;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -62,6 +63,7 @@ public class DbKomunikacija {
 
     public void sacuvaj(OpstiDomenskiObjekat odo) throws Exception {
         try {
+            System.out.println(odo.unos());
             sqlStatement = connection.createStatement();
             sqlStatement.executeUpdate(odo.unos());
             sqlStatement.close();

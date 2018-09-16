@@ -2,8 +2,6 @@ package forme.polisa;
 
 import domen.StavkaPolise;
 import javax.swing.SwingUtilities;
-import transfer.TransferObjekatOdgovor;
-import transfer.TransferObjekatZahtev;
 import util.Sesija;
 
 /**
@@ -12,8 +10,6 @@ import util.Sesija;
  */
 public class FrmKasko extends javax.swing.JDialog {
 
-    TransferObjekatZahtev toZahtev;
-    TransferObjekatOdgovor toOdgovor;
     FrmPolisa forma = null;
 
     /**
@@ -40,8 +36,8 @@ public class FrmKasko extends javax.swing.JDialog {
         txtCenaVozila = new javax.swing.JTextField();
         chbPopust = new javax.swing.JCheckBox();
         cmbPopust = new javax.swing.JComboBox();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnOdustani = new javax.swing.JButton();
+        btnUbaci = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -56,12 +52,17 @@ public class FrmKasko extends javax.swing.JDialog {
 
         cmbPopust.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "5%", "10%", "15%" }));
 
-        jButton1.setText("Odustani");
-
-        jButton2.setText("Ubaci");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnOdustani.setText("Odustani");
+        btnOdustani.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnOdustaniActionPerformed(evt);
+            }
+        });
+
+        btnUbaci.setText("Ubaci");
+        btnUbaci.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUbaciActionPerformed(evt);
             }
         });
 
@@ -82,9 +83,9 @@ public class FrmKasko extends javax.swing.JDialog {
                             .addComponent(txtCenaVozila, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnUbaci, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)))
+                        .addComponent(btnOdustani)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -100,8 +101,8 @@ public class FrmKasko extends javax.swing.JDialog {
                     .addComponent(cmbPopust, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(btnOdustani)
+                    .addComponent(btnUbaci))
                 .addContainerGap())
         );
 
@@ -112,7 +113,7 @@ public class FrmKasko extends javax.swing.JDialog {
 
     }//GEN-LAST:event_chbPopustActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnUbaciActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbaciActionPerformed
         String naziv = Sesija.getInstance().get("kasko").toString();
         double cenaVozila = Double.parseDouble(txtCenaVozila.getText());
         double popust = 1;
@@ -132,11 +133,15 @@ public class FrmKasko extends javax.swing.JDialog {
                     popust = 1;
             }
         }
-        forma.dodajStavku(new StavkaPolise(-1, naziv, cenaVozila * popust, null), -1);
+        forma.dodajStavku(new StavkaPolise(-1, -1, naziv, cenaVozila * popust, null), -1);
 
         Sesija.getInstance().remove("kasko");
         SwingUtilities.getWindowAncestor(this).dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnUbaciActionPerformed
+
+    private void btnOdustaniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOdustaniActionPerformed
+        SwingUtilities.getWindowAncestor(this).dispose();
+    }//GEN-LAST:event_btnOdustaniActionPerformed
 
     /**
      * @param args the command line arguments
@@ -189,10 +194,10 @@ public class FrmKasko extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnOdustani;
+    private javax.swing.JButton btnUbaci;
     private javax.swing.JCheckBox chbPopust;
     private javax.swing.JComboBox cmbPopust;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel lblCenaVozila;
     private javax.swing.JTextField txtCenaVozila;
     // End of variables declaration//GEN-END:variables

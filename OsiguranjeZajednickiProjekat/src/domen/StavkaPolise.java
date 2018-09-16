@@ -11,6 +11,7 @@ import java.util.List;
  */
 public class StavkaPolise implements OpstiDomenskiObjekat {
 
+    private int polisaId;
     private int rb;
     private String naziv;
     private double cena;
@@ -19,11 +20,20 @@ public class StavkaPolise implements OpstiDomenskiObjekat {
     public StavkaPolise() {
     }
 
-    public StavkaPolise(int rb, String naziv, double cena, CenovnikOsiguranja cenovnik) {
+    public StavkaPolise(int polisaId, int rb, String naziv, double cena, CenovnikOsiguranja cenovnik) {
+        this.polisaId = polisaId;
         this.rb = rb;
         this.naziv = naziv;
         this.cena = cena;
         this.cenovnik = cenovnik;
+    }
+
+    public int getPolisaId() {
+        return polisaId;
+    }
+
+    public void setPolisaId(int polisaId) {
+        this.polisaId = polisaId;
     }
 
     public int getRb() {
@@ -96,9 +106,14 @@ public class StavkaPolise implements OpstiDomenskiObjekat {
 
     @Override
     public String unos() {
+        if (cenovnik == null) {
+            return String.format(
+                    "INSERT INTO stavka_polise(PolisaID, RB, Naziv, Cena) VALUES (%d, %d, '%s', %f)", 
+                    polisaId, rb, naziv, cena);
+        }
         return String.format(
-                "INSERT INTO stavka_polise VALUES (%d, %s, %f, %d)",
-                rb, naziv, cena, cenovnik.getCenovnikId());
+                "INSERT INTO stavka_polise VALUES (%d, %d, '%s', %f, %d)",
+                polisaId, rb, naziv, cena, cenovnik.getCenovnikId());
     }
 
     @Override
@@ -113,7 +128,8 @@ public class StavkaPolise implements OpstiDomenskiObjekat {
 
     @Override
     public String pretraga() {
-        return "SELECT * FROM stavka_polise";
+        return "SELECT * FROM stavka_polise sp LEFT JOIN cenovnik_osiguranja co ON sp.CenovnikID = co.CenovnikID "
+                + "ORDER BY PolisaID, RB ASC";
     }
 
     @Override
@@ -122,10 +138,14 @@ public class StavkaPolise implements OpstiDomenskiObjekat {
         try {
             while (rs.next()) {
                 lista.add(new StavkaPolise(
+                        rs.getInt("PolisaID"),
                         rs.getInt("RB"),
                         rs.getString("Naziv"),
                         rs.getDouble("Cena"),
-                        new CenovnikOsiguranja()));
+                        new CenovnikOsiguranja(
+                                rs.getInt("CenovnikID"), 
+                                rs.getString("Kategorija"), 
+                                rs.getDouble("co.Cena"))));
             }
         } catch (SQLException e) {
             System.out.println("Greska prilikom ucitavanja: " + e);

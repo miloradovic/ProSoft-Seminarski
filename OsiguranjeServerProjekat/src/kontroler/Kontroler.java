@@ -13,6 +13,7 @@ import so.klijent.VratiKlijenteSO;
 import so.klijent.ZapamtiKlijentaSO;
 import so.mesto.VratiMestaSO;
 import so.polisa.KreirajNovuPolisuSO;
+import so.polisa.ZapamtiPolisuSO;
 import so.referent.NadjiReferentaSO;
 import so.vozilo.VratiVozilaSO;
 
@@ -104,7 +105,7 @@ public class Kontroler {
     }
 
     public void zapamtiPolisu(Polisa p) throws Exception {
-        OpstaSO zapamtiPolisu = new ZapamtiKlijentaSO(p);
+        OpstaSO zapamtiPolisu = new ZapamtiPolisuSO(p);
         zapamtiPolisu.izvrsenjeSO();
     }
 }

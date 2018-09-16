@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import transfer.TransferObjekatOdgovor;
 import transfer.TransferObjekatZahtev;
+import util.SettingsLoader;
 
 /**
  *
@@ -17,7 +18,9 @@ public class Komunikacija {
     private static Komunikacija instance;
 
     private Komunikacija() throws IOException {
-        socket = new Socket("localhost", 9000);
+        String ip = SettingsLoader.getInstance().getValue("ip");
+        String port = SettingsLoader.getInstance().getValue("port");
+        socket = new Socket(ip, Integer.parseInt(port));
     }
 
     public static Komunikacija getInstance() throws IOException {

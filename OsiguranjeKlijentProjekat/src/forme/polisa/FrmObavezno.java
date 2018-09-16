@@ -5,11 +5,7 @@ import domen.StavkaPolise;
 import java.io.IOException;
 import java.util.List;
 import javax.swing.SwingUtilities;
-import static jdk.nashorn.internal.objects.NativeMath.round;
-import komunikacija.Komunikacija;
-import transfer.Operacija;
-import transfer.TransferObjekatOdgovor;
-import transfer.TransferObjekatZahtev;
+import kontroler.Kontroler;
 import util.Sesija;
 
 /**
@@ -18,8 +14,6 @@ import util.Sesija;
  */
 public class FrmObavezno extends javax.swing.JDialog {
 
-    TransferObjekatZahtev toZahtev;
-    TransferObjekatOdgovor toOdgovor;
     FrmPolisa forma = null;
     StavkaPolise sp = new StavkaPolise();
 
@@ -152,7 +146,7 @@ public class FrmObavezno extends javax.swing.JDialog {
         }
         double cena = cenovnik.getCena() * sp.getKoeficijent(i) * taxi * rent * invalid;
 
-        forma.dodajStavku(new StavkaPolise(-1, naziv, cena, cenovnik), i);
+        forma.dodajStavku(new StavkaPolise(-1, -1, naziv, cena, cenovnik), i);
 
         Sesija.getInstance().remove("obavezno");
         SwingUtilities.getWindowAncestor(this).dispose();
@@ -216,16 +210,13 @@ public class FrmObavezno extends javax.swing.JDialog {
     private javax.swing.JLabel lblPremijskiStepen;
     // End of variables declaration//GEN-END:variables
 
-    private void srediFormu() {
-        toZahtev = new TransferObjekatZahtev();
-        toZahtev.setOperacija(Operacija.VRATI_CENOVNIK);
+    private void srediFormu() {        
+        List<CenovnikOsiguranja> listaC = null;
         try {
-            Komunikacija.getInstance().posalji(toZahtev);
-            toOdgovor = Komunikacija.getInstance().procitaj();
+            listaC = Kontroler.getInstance().vratiCenovnik();
         } catch (IOException | ClassNotFoundException ex) {
             System.out.println("Greska: " + ex);
-        }
-        List<CenovnikOsiguranja> listaC = (List<CenovnikOsiguranja>) toOdgovor.getRezultat();
+        }        
         cmbKategorija.removeAllItems();
         for (CenovnikOsiguranja cenovnik : listaC) {
             cmbKategorija.addItem(cenovnik);

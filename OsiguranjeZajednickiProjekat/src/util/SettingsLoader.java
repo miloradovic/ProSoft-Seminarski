@@ -1,4 +1,4 @@
-package db;
+package util;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -37,7 +37,7 @@ public class SettingsLoader {
         FileOutputStream fos = new FileOutputStream("settings.properties");
         properties.store(fos, "");
     }
-    
+
     public String getValue(String key) {
         return properties.getProperty(key, "n/a");
     }
@@ -45,6 +45,5 @@ public class SettingsLoader {
     public void setProperties(Properties properties) {
         this.properties = properties;
     }
-    
     
 }

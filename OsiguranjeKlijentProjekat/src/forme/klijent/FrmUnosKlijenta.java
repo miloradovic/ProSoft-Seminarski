@@ -7,10 +7,8 @@ import java.io.IOException;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import komunikacija.Komunikacija;
-import transfer.Operacija;
+import kontroler.Kontroler;
 import transfer.TransferObjekatOdgovor;
-import transfer.TransferObjekatZahtev;
 import util.Sesija;
 
 /**
@@ -19,8 +17,6 @@ import util.Sesija;
  */
 public class FrmUnosKlijenta extends javax.swing.JPanel {
 
-    TransferObjekatZahtev toZahtev;
-    TransferObjekatOdgovor toOdgovor;
     /**
      * Creates new form FrmUnosKlijenta
      */
@@ -188,10 +184,8 @@ public class FrmUnosKlijenta extends javax.swing.JPanel {
             Mesto mesto = (Mesto) jcbMesto.getSelectedItem();
             
             Klijent k = new Klijent(klijentId, ime, prezime, jmbg, ulicaBroj, mesto);
-            
-            toZahtev = new TransferObjekatZahtev(Operacija.ZAPAMTI_KLIJENTA, k);
-            Komunikacija.getInstance().posalji(toZahtev);
-            toOdgovor = Komunikacija.getInstance().procitaj();
+                        
+            TransferObjekatOdgovor toOdgovor = Kontroler.getInstance().zapamtiKlijenta(k);
             if (toOdgovor.getIzuzetak() == null) {
                 JOptionPane.showMessageDialog(this, "Klijent je sacuvan.");
             } else {
@@ -211,13 +205,8 @@ public class FrmUnosKlijenta extends javax.swing.JPanel {
     }//GEN-LAST:event_btnObrisiActionPerformed
 
     private void btnKreirajKlijentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKreirajKlijentaActionPerformed
-        try {
-        toZahtev = new TransferObjekatZahtev();
-        toZahtev.setOperacija(Operacija.KREIRAJ_NOVOG_KLIJENTA);
-        Komunikacija.getInstance().posalji(toZahtev);
-        toOdgovor = Komunikacija.getInstance().procitaj();
-        
-        int i = (int) toOdgovor.getRezultat();
+        try {        
+        int i = Kontroler.getInstance().kreirajNovogKlijenta();
         txtKlijentID.setText(i + "");
         } catch (IOException | ClassNotFoundException ex) {
             System.out.println("Greska: " + ex);
@@ -249,13 +238,8 @@ public class FrmUnosKlijenta extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void srediFormu() {
-        try {
-            toZahtev = new TransferObjekatZahtev();
-            toZahtev.setOperacija(Operacija.VRATI_MESTA);
-            Komunikacija.getInstance().posalji(toZahtev);
-            toOdgovor = Komunikacija.getInstance().procitaj();
-            List<OpstiDomenskiObjekat> listaMesta = (List<OpstiDomenskiObjekat>) toOdgovor.getRezultat();
-
+        try {            
+            List<OpstiDomenskiObjekat> listaMesta = Kontroler.getInstance().vratiMesta();
             jcbMesto.removeAllItems();
             for (OpstiDomenskiObjekat m : listaMesta) {
                 jcbMesto.addItem(m);

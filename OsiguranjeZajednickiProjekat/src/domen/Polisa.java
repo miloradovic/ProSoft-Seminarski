@@ -126,27 +126,31 @@ public class Polisa implements OpstiDomenskiObjekat {
         for (StavkaPolise stavka : getListaStavki()) {
             ukupanIznos += stavka.getCena();
             stavka.setRb(rb);
+            stavka.setPolisaId(polisaId);
             rb++;
         }
         setUkupno(ukupanIznos);
     }
-    
+
     @Override
     public String unos() {
         return String.format(
-                "INSERT INTO polisa VALUES (%d, %f, %d, '%date', '%date', '%s', %d, %d, %d)",
-                polisaId, ukupno, premijskiStepen, datumUgovaranja, datumRaskidanja,
+                "INSERT INTO polisa(PolisaID, Ukupno, PremijskiStepen, DatumUgovaranja, KlijentID, VoziloID, ReferentUgovarao) "
+                        + "VALUES (%d, %f, %d, '%tF', %d, %d, %d)",
+                polisaId,
+                ukupno,
+                premijskiStepen,
+                new java.sql.Date(datumUgovaranja.getTime()),
                 klijent.getKlijentId(),
                 vozilo.getVoziloId(),
-                referentUgovaranje.getReferentId(),
-                referentRaskidanje.getReferentId());
+                referentUgovaranje.getReferentId());
     }
 
     @Override
     public String izmena() {
         return String.format(
                 "UPDATE polisa SET DatumRaskidanja = '%date' WHERE PolisaID = %d",
-                datumRaskidanja, polisaId);
+                new java.sql.Date(datumRaskidanja.getTime()), polisaId);
     }
 
     @Override
@@ -156,9 +160,6 @@ public class Polisa implements OpstiDomenskiObjekat {
 
     @Override
     public String pretraga() {
-        if (polisaId == -1) {
-            return "";
-        }
         return "SELECT * FROM polisa";
     }
 
@@ -173,8 +174,8 @@ public class Polisa implements OpstiDomenskiObjekat {
                         rs.getInt("PremijskiStepen"),
                         rs.getDate("DatumUgovaranja"),
                         rs.getDate("DatumRaskidanja"),
-                        new Klijent(), 
-                        (Vozilo) new Vozilo().ucitaj(rs),
+                        new Klijent(),
+                        new Vozilo(),
                         new Referent(),
                         new Referent()));
             }

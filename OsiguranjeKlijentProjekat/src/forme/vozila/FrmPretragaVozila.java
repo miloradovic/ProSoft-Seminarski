@@ -6,19 +6,13 @@ import java.util.List;
 import javax.swing.RowFilter;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import komunikacija.Komunikacija;
-import transfer.Operacija;
-import transfer.TransferObjekatOdgovor;
-import transfer.TransferObjekatZahtev;
+import kontroler.Kontroler;
 
 /**
  *
  * @author Darko
  */
 public class FrmPretragaVozila extends javax.swing.JPanel {
-
-    TransferObjekatZahtev toZahtev;
-    TransferObjekatOdgovor toOdgovor;
 
     /**
      * Creates new form FrmPretragaVozila
@@ -131,14 +125,9 @@ public class FrmPretragaVozila extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void srediFormu() {
-        try {
-            toZahtev = new TransferObjekatZahtev();
-            toZahtev.setOperacija(Operacija.VRATI_VOZILA);
-            Komunikacija.getInstance().posalji(toZahtev);
-
-            toOdgovor = Komunikacija.getInstance().procitaj();
-            List listaVozila = (List) toOdgovor.getRezultat();
-
+        try {            
+            List listaVozila = Kontroler.getInstance().vratiVozila();
+            
             ModelTabeleVozila mtv = new ModelTabeleVozila(listaVozila);
             jtblVozila.setModel(mtv);
         } catch (IOException | ClassNotFoundException ex) {

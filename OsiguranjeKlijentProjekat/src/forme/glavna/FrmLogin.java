@@ -1,14 +1,12 @@
 package forme.glavna;
 
-import domen.OpstiDomenskiObjekat;
 import domen.Referent;
+import java.awt.BorderLayout;
 import java.awt.HeadlessException;
 import java.io.IOException;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-import komunikacija.Komunikacija;
-import transfer.Operacija;
-import transfer.TransferObjekatOdgovor;
-import transfer.TransferObjekatZahtev;
+import kontroler.Kontroler;
 import util.Sesija;
 
 /**
@@ -36,8 +34,9 @@ public class FrmLogin extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         txtUser = new javax.swing.JTextField();
-        txtPass = new javax.swing.JTextField();
         btnLogin = new javax.swing.JButton();
+        passwordField = new javax.swing.JPasswordField();
+        btnPodesavanja = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login");
@@ -54,9 +53,11 @@ public class FrmLogin extends javax.swing.JFrame {
                 btnLoginActionPerformed(evt);
             }
         });
-        btnLogin.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                btnLoginKeyPressed(evt);
+
+        btnPodesavanja.setText("Podesavanja");
+        btnPodesavanja.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPodesavanjaActionPerformed(evt);
             }
         });
 
@@ -68,7 +69,8 @@ public class FrmLogin extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnPodesavanja)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnLogin))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -76,8 +78,8 @@ public class FrmLogin extends javax.swing.JFrame {
                             .addComponent(jLabel2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtPass, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                            .addComponent(txtUser))))
+                            .addComponent(txtUser, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                            .addComponent(passwordField))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -90,9 +92,11 @@ public class FrmLogin extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(btnLogin)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnLogin)
+                    .addComponent(btnPodesavanja))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -103,25 +107,25 @@ public class FrmLogin extends javax.swing.JFrame {
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         try {
             // Validacija
-            if (txtUser.getText().isEmpty() || txtPass.getText().isEmpty()) {
+            if (txtUser.getText().isEmpty() || passwordField.getPassword().length < 1) {
                 JOptionPane.showMessageDialog(this, "Unesi podatke");
                 return;
             }
             
             String user = txtUser.getText().trim();
-            String pass = txtPass.getText().trim();
+            char[] sifraChar = passwordField.getPassword();
+            String pass = new String(sifraChar);
             
             Referent r = new Referent();
             r.setUser(user);
             r.setPass(pass);
-            TransferObjekatZahtev toZahtev = new TransferObjekatZahtev();
-            toZahtev.setOperacija(Operacija.NADJI_REFERENTA);
-            toZahtev.setParametar((OpstiDomenskiObjekat) r);
+                        
+            try {
+                r = Kontroler.getInstance().nadjiReferenta(r);
+            } catch (ClassNotFoundException ex) {
+                System.out.println("Greska: " + ex);
+            }
             
-            Komunikacija.getInstance().posalji(toZahtev);
-            TransferObjekatOdgovor toOdgovor = Komunikacija.getInstance().procitaj();
-            
-            r = (Referent) toOdgovor.getRezultat();
             if (r != null) {
                 Sesija.getInstance().put("Referent", r);
                 
@@ -132,14 +136,24 @@ public class FrmLogin extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(this, "Netacni podaci ili navedeni Referent ne postoji.");
             }
-        } catch (HeadlessException | IOException | ClassNotFoundException ex) {
+        } catch (HeadlessException | IOException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
     }//GEN-LAST:event_btnLoginActionPerformed
 
-    private void btnLoginKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnLoginKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnLoginKeyPressed
+    private void btnPodesavanjaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPodesavanjaActionPerformed
+        FrmPodesavanja f = null;
+        try {
+            f = new FrmPodesavanja();
+        } catch (IOException ex) {
+            System.out.println("Greska: " + ex);
+        }
+        JDialog d = new JDialog(this, "Podesavanje", true);
+        d.setLayout(new BorderLayout());
+        d.add(f, BorderLayout.CENTER);
+        d.pack();
+        d.setVisible(true);
+    }//GEN-LAST:event_btnPodesavanjaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -178,9 +192,10 @@ public class FrmLogin extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
+    private javax.swing.JButton btnPodesavanja;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField txtPass;
+    private javax.swing.JPasswordField passwordField;
     private javax.swing.JTextField txtUser;
     // End of variables declaration//GEN-END:variables
 }

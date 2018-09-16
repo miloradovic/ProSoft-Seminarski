@@ -6,10 +6,7 @@ import java.io.IOException;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import komunikacija.Komunikacija;
-import transfer.Operacija;
-import transfer.TransferObjekatOdgovor;
-import transfer.TransferObjekatZahtev;
+import kontroler.Kontroler;
 
 /**
  *
@@ -17,9 +14,6 @@ import transfer.TransferObjekatZahtev;
  */
 public class FrmPretragaPolise extends javax.swing.JPanel {
 
-    TransferObjekatZahtev toZahtev;
-    TransferObjekatOdgovor toOdgovor;
-    
     /**
      * Creates new form FrmPretragaPolise
      */
@@ -124,13 +118,13 @@ public class FrmPretragaPolise extends javax.swing.JPanel {
         int index = jtblPolisa.getSelectedRow();
         if (index != -1) {
             ModelTabelePolisa model = (ModelTabelePolisa) jtblPolisa.getModel();
-            
+
             // TODO
             JOptionPane.showMessageDialog(this, "TODO");
         } else {
             JOptionPane.showMessageDialog(this, "Odaberite stavku koju zelite da izmenite!");
         }
-        
+
         // SwingUtilities.getWindowAncestor(this).dispose();
     }//GEN-LAST:event_btnIzmeniActionPerformed
 
@@ -146,18 +140,13 @@ public class FrmPretragaPolise extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void srediFormu() {
-        toZahtev = new TransferObjekatZahtev();
-        toZahtev.setOperacija(Operacija.PRETRAZI_POLISE);
-        
         try {
-            Komunikacija.getInstance().posalji(toZahtev);
-            toOdgovor = Komunikacija.getInstance().procitaj();
+            List<Polisa> listaP = Kontroler.getInstance().pretraziPolise();
+            ModelTabelePolisa mtp = new ModelTabelePolisa(listaP);
+            jtblPolisa.setModel(mtp);
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Greska: " + e);
         }
-        
-        List<Polisa> listaP = (List<Polisa>) toOdgovor.getRezultat();
-        ModelTabelePolisa mtp = new ModelTabelePolisa(listaP);
-        jtblPolisa.setModel(mtp);
+
     }
 }

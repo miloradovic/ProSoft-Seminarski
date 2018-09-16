@@ -1,10 +1,8 @@
-package forme;
+package forme.glavna;
 
 import util.SettingsLoader;
 import java.io.IOException;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 
 /**
@@ -15,6 +13,7 @@ public class FrmPodesavanja extends javax.swing.JPanel {
 
     /**
      * Creates new form FrmPodesavanja
+     *
      * @throws java.io.IOException
      */
     public FrmPodesavanja() throws IOException {
@@ -33,22 +32,18 @@ public class FrmPodesavanja extends javax.swing.JPanel {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        txtBaza = new javax.swing.JTextField();
-        txtUser = new javax.swing.JTextField();
-        txtPass = new javax.swing.JTextField();
+        txtIP = new javax.swing.JTextField();
+        txtPort = new javax.swing.JTextField();
         btnOdustani = new javax.swing.JButton();
         btnSacuvaj = new javax.swing.JButton();
 
-        jLabel1.setText("Ime baze: ");
+        jLabel1.setText("IP:  ");
 
-        jLabel2.setText("Korisnicko ime: ");
+        jLabel2.setText("Port: ");
 
-        jLabel3.setText("Korisnicka sifra: ");
+        txtIP.setText("baza");
 
-        txtBaza.setText("baza");
-
-        txtUser.setText("admin");
+        txtPort.setText("admin");
 
         btnOdustani.setText("Odustani");
         btnOdustani.addActionListener(new java.awt.event.ActionListener() {
@@ -73,16 +68,12 @@ public class FrmPodesavanja extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
-                        .addComponent(txtBaza, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
+                        .addComponent(txtIP, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtPass)
-                            .addComponent(txtUser, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)))
+                        .addComponent(jLabel2)
+                        .addGap(94, 94, Short.MAX_VALUE)
+                        .addComponent(txtPort, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSacuvaj)
@@ -96,16 +87,12 @@ public class FrmPodesavanja extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtBaza, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                    .addComponent(txtPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnOdustani)
                     .addComponent(btnSacuvaj))
@@ -119,14 +106,14 @@ public class FrmPodesavanja extends javax.swing.JPanel {
 
     private void btnSacuvajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSacuvajActionPerformed
         Properties prop = new Properties();
-        prop.setProperty("url", txtBaza.getText().trim());
-        prop.setProperty("user", txtUser.getText().trim());
-        prop.setProperty("password", txtPass.getText().trim());
+        prop.setProperty("url", txtIP.getText().trim());
+        prop.setProperty("user", txtPort.getText().trim());
+
         try {
             SettingsLoader.getInstance().setProperties(prop);
             SwingUtilities.getWindowAncestor(this).dispose();
         } catch (IOException ex) {
-            Logger.getLogger(FrmPodesavanja.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Greska: " + ex);
         }
     }//GEN-LAST:event_btnSacuvajActionPerformed
 
@@ -136,15 +123,12 @@ public class FrmPodesavanja extends javax.swing.JPanel {
     private javax.swing.JButton btnSacuvaj;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JTextField txtBaza;
-    private javax.swing.JTextField txtPass;
-    private javax.swing.JTextField txtUser;
+    private javax.swing.JTextField txtIP;
+    private javax.swing.JTextField txtPort;
     // End of variables declaration//GEN-END:variables
 
     private void srediFormu() throws IOException {
-        txtBaza.setText(SettingsLoader.getInstance().getValue("url"));
-        txtUser.setText(SettingsLoader.getInstance().getValue("user"));
-        txtPass.setText(SettingsLoader.getInstance().getValue("password"));
+        txtIP.setText(SettingsLoader.getInstance().getValue("ip"));
+        txtPort.setText(SettingsLoader.getInstance().getValue("port"));
     }
 }

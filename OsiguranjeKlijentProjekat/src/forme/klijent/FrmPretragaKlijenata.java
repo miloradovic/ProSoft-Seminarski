@@ -1,18 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package forme.klijent;
 
 import forme.klijent.model.ModelTabeleKlijent;
 import java.io.IOException;
 import java.util.List;
 import javax.swing.SwingUtilities;
-import komunikacija.Komunikacija;
-import transfer.Operacija;
-import transfer.TransferObjekatOdgovor;
-import transfer.TransferObjekatZahtev;
+import kontroler.Kontroler;
 
 /**
  *
@@ -20,8 +12,6 @@ import transfer.TransferObjekatZahtev;
  */
 public class FrmPretragaKlijenata extends javax.swing.JPanel {
 
-    TransferObjekatZahtev toZahtev;
-    TransferObjekatOdgovor toOdgovor;
     /**
      * Creates new form FrmPretragaKlijenata
      */
@@ -129,14 +119,9 @@ public class FrmPretragaKlijenata extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void srediFormu() {
-        try {
-            toZahtev = new TransferObjekatZahtev();
-            toZahtev.setOperacija(Operacija.VRATI_KLIJENTE);
-            Komunikacija.getInstance().posalji(toZahtev);
-
-            toOdgovor = Komunikacija.getInstance().procitaj();
-            List listaK = (List) toOdgovor.getRezultat();
-
+        try {            
+            List listaK = Kontroler.getInstance().vratiKlijente();
+            
             ModelTabeleKlijent mtk = new ModelTabeleKlijent(listaK);
             jtblKlijent.setModel(mtk);
         } catch (IOException | ClassNotFoundException ex) {
