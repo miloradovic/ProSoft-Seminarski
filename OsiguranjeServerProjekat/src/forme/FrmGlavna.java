@@ -53,6 +53,7 @@ public class FrmGlavna extends javax.swing.JFrame {
             }
         });
 
+        lblStatus.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblStatus.setText("Server je ugasen...");
 
         btnStop.setText("Stop");
@@ -85,7 +86,7 @@ public class FrmGlavna extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblStatus)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 184, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnStart)
                     .addComponent(btnPodesavanje)

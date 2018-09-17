@@ -8,11 +8,11 @@ import domen.Vozilo;
 import java.util.List;
 import so.OpstaSO;
 import so.cenovnik.VratiCenovnikOsiguranjaSO;
-import so.klijent.KreirajNovogKlijentaSO;
+import so.klijent.ObrisiKlijentaSO;
 import so.klijent.VratiKlijenteSO;
 import so.klijent.ZapamtiKlijentaSO;
 import so.mesto.VratiMestaSO;
-import so.polisa.KreirajNovuPolisuSO;
+import so.polisa.PretraziPoliseSO;
 import so.polisa.ZapamtiPolisuSO;
 import so.referent.NadjiReferentaSO;
 import so.vozilo.VratiVozilaSO;
@@ -43,12 +43,6 @@ public class Kontroler {
         return ((NadjiReferentaSO) nadjiReferentaSO).getReferenta();
     }
 
-    public int kreirajNovogKlijenta() throws Exception {
-        OpstaSO kreirajNovogKlijenta = new KreirajNovogKlijentaSO();
-        kreirajNovogKlijenta.izvrsenjeSO();
-        return ((KreirajNovogKlijentaSO) kreirajNovogKlijenta).getNovogKlijenta();
-    }
-
     public void zapamtiKlijenta(Klijent k) throws Exception {
         OpstaSO zapamtiKlijenta = new ZapamtiKlijentaSO(k);
         zapamtiKlijenta.izvrsenjeSO();
@@ -67,9 +61,9 @@ public class Kontroler {
     }
 
     public List<OpstiDomenskiObjekat> vratiCenovnik() throws Exception {
-        OpstaSO vratiCenovnik = new VratiCenovnikOsiguranjaSO();
-        vratiCenovnik.izvrsenjeSO();
-        return ((VratiCenovnikOsiguranjaSO) vratiCenovnik).getCenovnik();
+        OpstaSO vratiCenovnikSO = new VratiCenovnikOsiguranjaSO();
+        vratiCenovnikSO.izvrsenjeSO();
+        return ((VratiCenovnikOsiguranjaSO) vratiCenovnikSO).getCenovnik();
     }
 
     public List<OpstiDomenskiObjekat> vratiVozila() throws Exception {
@@ -82,8 +76,9 @@ public class Kontroler {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public void obrisiKlijenta(Klijent klijent) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void obrisiKlijenta(Klijent klijent) throws Exception {
+        OpstaSO obrisiKlijentaSO = new ObrisiKlijentaSO(klijent);
+        obrisiKlijentaSO.izvrsenjeSO();
     }
 
     public Klijent ucitajKlijenta(Klijent klijent) {
@@ -98,14 +93,14 @@ public class Kontroler {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public int kreirajNovuPolisu() throws Exception {
-        OpstaSO kreirajNovuPolisu = new KreirajNovuPolisuSO();
-        kreirajNovuPolisu.izvrsenjeSO();
-        return ((KreirajNovuPolisuSO) kreirajNovuPolisu).getNovuPolisu();
+    public void zapamtiPolisu(Polisa p) throws Exception {
+        OpstaSO zapamtiPolisuSO = new ZapamtiPolisuSO(p);
+        zapamtiPolisuSO.izvrsenjeSO();
     }
 
-    public void zapamtiPolisu(Polisa p) throws Exception {
-        OpstaSO zapamtiPolisu = new ZapamtiPolisuSO(p);
-        zapamtiPolisu.izvrsenjeSO();
+    public List<OpstiDomenskiObjekat> pretraziPolise(Polisa p) throws Exception {
+        OpstaSO pretraziPoliseSO = new PretraziPoliseSO(p);
+        pretraziPoliseSO.izvrsenjeSO();
+        return ((PretraziPoliseSO) pretraziPoliseSO).getListaPolisa();
     }
 }

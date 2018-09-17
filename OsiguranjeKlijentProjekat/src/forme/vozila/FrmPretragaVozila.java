@@ -32,25 +32,15 @@ public class FrmPretragaVozila extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        txtRegTablice = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        txtModel = new javax.swing.JTextField();
+        txtPretraga = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtblVozila = new javax.swing.JTable();
 
-        jLabel1.setText("Registarske tablice: ");
+        jLabel1.setText("Pretraga:  ");
 
-        txtRegTablice.addActionListener(new java.awt.event.ActionListener() {
+        txtPretraga.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtRegTabliceActionPerformed(evt);
-            }
-        });
-
-        jLabel2.setText("Model: ");
-
-        txtModel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtModelActionPerformed(evt);
+                txtPretragaActionPerformed(evt);
             }
         });
 
@@ -76,13 +66,9 @@ public class FrmPretragaVozila extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 586, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
+                        .addComponent(jLabel1)
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtModel)
-                            .addComponent(txtRegTablice))))
+                        .addComponent(txtPretraga)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -91,37 +77,25 @@ public class FrmPretragaVozila extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtRegTablice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPretraga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtModel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtRegTabliceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRegTabliceActionPerformed
+    private void txtPretragaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPretragaActionPerformed
         TableRowSorter<TableModel> sorter = new TableRowSorter<>(((ModelTabeleVozila) jtblVozila.getModel()));
-        sorter.setRowFilter(RowFilter.regexFilter(txtRegTablice.getText()));
+        sorter.setRowFilter(RowFilter.regexFilter(txtPretraga.getText()));
         jtblVozila.setRowSorter(sorter);
-    }//GEN-LAST:event_txtRegTabliceActionPerformed
-
-    private void txtModelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtModelActionPerformed
-        TableRowSorter<TableModel> sorter = new TableRowSorter<>(((ModelTabeleVozila) jtblVozila.getModel()));
-        sorter.setRowFilter(RowFilter.regexFilter(txtModel.getText()));
-        jtblVozila.setRowSorter(sorter);
-    }//GEN-LAST:event_txtModelActionPerformed
+    }//GEN-LAST:event_txtPretragaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jtblVozila;
-    private javax.swing.JTextField txtModel;
-    private javax.swing.JTextField txtRegTablice;
+    private javax.swing.JTextField txtPretraga;
     // End of variables declaration//GEN-END:variables
 
     private void srediFormu() {

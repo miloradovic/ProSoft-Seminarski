@@ -53,4 +53,8 @@ public class ModelTabeleKlijent extends AbstractTableModel {
     public String getColumnName(int column) {
         return kolone[column];
     }
+
+    public Klijent vratiKlijenta(int index) {
+        return lk.get(index);
+    }
 }

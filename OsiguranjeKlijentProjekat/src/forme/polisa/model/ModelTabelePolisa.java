@@ -57,4 +57,8 @@ public class ModelTabelePolisa extends AbstractTableModel {
     public String getColumnName(int column) {
         return kolone[column];
     }
+
+    public Polisa vratiPolisu(int red) {
+        return lp.get(red);
+    }
 }

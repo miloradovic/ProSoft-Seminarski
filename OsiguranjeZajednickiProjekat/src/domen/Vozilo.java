@@ -84,7 +84,7 @@ public class Vozilo implements OpstiDomenskiObjekat{
 
     @Override
     public String toString() {
-        return marka + " - " + model + "(" + godinaProizvodnje + ")";
+        return marka + " - " + model + " [" + regTablice + "]";
     }
 
     @Override

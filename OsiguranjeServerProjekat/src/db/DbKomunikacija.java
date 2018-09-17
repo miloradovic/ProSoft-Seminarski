@@ -4,6 +4,7 @@ import util.SettingsLoader;
 import domen.OpstiDomenskiObjekat;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
@@ -61,12 +62,18 @@ public class DbKomunikacija {
         }
     }
 
-    public void sacuvaj(OpstiDomenskiObjekat odo) throws Exception {
+    public int sacuvaj(OpstiDomenskiObjekat odo) throws Exception {
+        int id = -1;
         try {
             System.out.println(odo.unos());
             sqlStatement = connection.createStatement();
-            sqlStatement.executeUpdate(odo.unos());
+            int key = sqlStatement.executeUpdate(odo.unos(), Statement.RETURN_GENERATED_KEYS);
+            ResultSet rs = sqlStatement.getGeneratedKeys();
+            if (rs.next()) {
+                id = rs.getInt(1);
+            }
             sqlStatement.close();
+            return id;
         } catch (SQLException ex) {
             throw new Exception("Neuspesno cuvanje objekta!", ex);
         }
@@ -74,6 +81,7 @@ public class DbKomunikacija {
 
     public void obrisi(OpstiDomenskiObjekat odo) throws Exception {
         try {
+            System.out.println(odo.brisanje());
             sqlStatement = connection.createStatement();
             sqlStatement.executeUpdate(odo.brisanje());
             sqlStatement.close();
@@ -84,6 +92,7 @@ public class DbKomunikacija {
 
     public void izmeni(OpstiDomenskiObjekat odo) throws Exception {
         try {
+            System.out.println(odo.izmena());
             sqlStatement = connection.createStatement();
             sqlStatement.executeUpdate(odo.izmena());
             sqlStatement.close();
@@ -94,6 +103,7 @@ public class DbKomunikacija {
 
     public List<OpstiDomenskiObjekat> pretrazi(OpstiDomenskiObjekat odo) throws Exception {
         try {
+            System.out.println(odo.pretraga());
             sqlStatement = connection.createStatement();
             List list = odo.ucitaj(sqlStatement.executeQuery(odo.pretraga()));
             sqlStatement.close();

@@ -44,6 +44,30 @@ public class Mesto implements OpstiDomenskiObjekat {
     }
 
     @Override
+    public int hashCode() {
+        int hash = 5;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Mesto other = (Mesto) obj;
+        if (this.ptt != other.ptt) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public String unos() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

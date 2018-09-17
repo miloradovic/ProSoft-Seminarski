@@ -1,10 +1,20 @@
 package forme.klijent;
 
+import domen.Klijent;
 import forme.klijent.model.ModelTabeleKlijent;
+import java.awt.BorderLayout;
+import java.awt.Frame;
+import java.awt.Window;
 import java.io.IOException;
 import java.util.List;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import kontroler.Kontroler;
+import util.Sesija;
 
 /**
  *
@@ -31,7 +41,6 @@ public class FrmPretragaKlijenata extends javax.swing.JPanel {
 
         jLabel1 = new javax.swing.JLabel();
         txtPretraga = new javax.swing.JTextField();
-        btnPretraga = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtblKlijent = new javax.swing.JTable();
         btnIzmeni = new javax.swing.JButton();
@@ -39,7 +48,11 @@ public class FrmPretragaKlijenata extends javax.swing.JPanel {
 
         jLabel1.setText("Pretraga: ");
 
-        btnPretraga.setText("Pretraga");
+        txtPretraga.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPretragaActionPerformed(evt);
+            }
+        });
 
         jtblKlijent.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -55,6 +68,11 @@ public class FrmPretragaKlijenata extends javax.swing.JPanel {
         jScrollPane1.setViewportView(jtblKlijent);
 
         btnIzmeni.setText("Izmeni");
+        btnIzmeni.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIzmeniActionPerformed(evt);
+            }
+        });
 
         btnOdustani.setText("Odustani");
         btnOdustani.addActionListener(new java.awt.event.ActionListener() {
@@ -75,9 +93,6 @@ public class FrmPretragaKlijenata extends javax.swing.JPanel {
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
                         .addComponent(txtPretraga))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnPretraga))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnIzmeni)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -91,9 +106,7 @@ public class FrmPretragaKlijenata extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txtPretraga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnPretraga)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(39, 39, 39)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 293, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -107,11 +120,37 @@ public class FrmPretragaKlijenata extends javax.swing.JPanel {
         SwingUtilities.getWindowAncestor(this).dispose();
     }//GEN-LAST:event_btnOdustaniActionPerformed
 
+    private void btnIzmeniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIzmeniActionPerformed
+        int red = jtblKlijent.convertRowIndexToModel(jtblKlijent.getSelectedRow());
+        if (red != -1) {
+            ModelTabeleKlijent mtk = (ModelTabeleKlijent) jtblKlijent.getModel();
+            Klijent k = mtk.vratiKlijenta(red);
+
+            Sesija.getInstance().put("izabrani_klijent", k);
+
+            FrmUnosKlijenta f = new FrmUnosKlijenta();
+            JDialog d = new JDialog(getParentFrame(), "Izmena klijenta", true);
+            d.setLayout(new BorderLayout());
+            d.add(f, BorderLayout.CENTER);
+            d.pack();
+            d.setVisible(true);
+
+            srediFormu();
+        } else {
+            JOptionPane.showMessageDialog(this, "Izaberite klijenta!");
+        }
+    }//GEN-LAST:event_btnIzmeniActionPerformed
+
+    private void txtPretragaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPretragaActionPerformed
+        TableRowSorter<TableModel> sorter = new TableRowSorter<>(jtblKlijent.getModel());
+        sorter.setRowFilter(RowFilter.regexFilter(txtPretraga.getText()));
+        jtblKlijent.setRowSorter(sorter);
+    }//GEN-LAST:event_txtPretragaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIzmeni;
     private javax.swing.JButton btnOdustani;
-    private javax.swing.JButton btnPretraga;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jtblKlijent;
@@ -119,13 +158,22 @@ public class FrmPretragaKlijenata extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void srediFormu() {
-        try {            
+        try {
             List listaK = Kontroler.getInstance().vratiKlijente();
-            
+
             ModelTabeleKlijent mtk = new ModelTabeleKlijent(listaK);
             jtblKlijent.setModel(mtk);
         } catch (IOException | ClassNotFoundException ex) {
             System.out.println("Greska: " + ex);
         }
+    }
+
+    private Frame getParentFrame() {
+        Window parentWindow = SwingUtilities.windowForComponent(this);
+        Frame parentFrame = null;
+        if (parentWindow instanceof Frame) {
+            parentFrame = (Frame) parentWindow;
+        }
+        return parentFrame;
     }
 }

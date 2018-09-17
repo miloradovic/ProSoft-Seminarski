@@ -90,7 +90,7 @@ public class Referent implements OpstiDomenskiObjekat {
 
     @Override
     public String pretraga() {
-        return String.format("SELECT * FROM Referent WHERE KorisnickoIme = '%s' AND KorisnickaSifra = '%s'", user, pass);
+        return String.format("SELECT * FROM Referent WHERE KorisnickoIme = '%s' AND KorisnickaSifra = '%s' LIMIT 1", user, pass);
     }
 
     @Override

@@ -12,10 +12,15 @@ public class ZapamtiKlijentaSO extends OpstaSO {
     public ZapamtiKlijentaSO(Object obj) {
         super(obj);
     }
-    
+
     @Override
     protected void izvrsiOperaciju(Object obj) throws Exception {
-        db.sacuvaj((Klijent) obj);
+        Klijent k = (Klijent) obj;
+        if (k.getKlijentId() > 0) {
+            db.izmeni(k);
+        } else {
+            db.sacuvaj(k);
+        }
     }
-    
+
 }

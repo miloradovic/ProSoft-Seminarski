@@ -1,5 +1,7 @@
 package so.polisa;
 
+import domen.OpstiDomenskiObjekat;
+import java.util.List;
 import so.OpstaSO;
 
 /**
@@ -8,9 +10,19 @@ import so.OpstaSO;
  */
 public class PretraziPoliseSO extends OpstaSO {
 
-    @Override
-    protected void izvrsiOperaciju(Object obj) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    List<OpstiDomenskiObjekat> listaPolisa;
+
+    public PretraziPoliseSO(Object obj) {
+        super(obj);
     }
     
+    @Override
+    protected void izvrsiOperaciju(Object obj) throws Exception {
+        listaPolisa = db.pretrazi((OpstiDomenskiObjekat) obj);
+    }
+
+    public List<OpstiDomenskiObjekat> getListaPolisa() {
+        return listaPolisa;
+    }
+
 }

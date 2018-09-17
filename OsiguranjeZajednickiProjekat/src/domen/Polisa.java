@@ -135,9 +135,8 @@ public class Polisa implements OpstiDomenskiObjekat {
     @Override
     public String unos() {
         return String.format(
-                "INSERT INTO polisa(PolisaID, Ukupno, PremijskiStepen, DatumUgovaranja, KlijentID, VoziloID, ReferentUgovarao) "
-                        + "VALUES (%d, %f, %d, '%tF', %d, %d, %d)",
-                polisaId,
+                "INSERT INTO polisa(Ukupno, PremijskiStepen, DatumUgovaranja, KlijentID, VoziloID, ReferentUgovarao) "
+                + "VALUES (%f, %d, '%tF', %d, %d, %d)",
                 ukupno,
                 premijskiStepen,
                 new java.sql.Date(datumUgovaranja.getTime()),
@@ -149,8 +148,10 @@ public class Polisa implements OpstiDomenskiObjekat {
     @Override
     public String izmena() {
         return String.format(
-                "UPDATE polisa SET DatumRaskidanja = '%date' WHERE PolisaID = %d",
-                new java.sql.Date(datumRaskidanja.getTime()), polisaId);
+                "UPDATE polisa SET DatumRaskidanja = '%tF', ReferentRaskidao = %d WHERE PolisaID = %d",
+                new java.sql.Date(datumRaskidanja.getTime()),
+                referentRaskidanje.getReferentId(),
+                polisaId);
     }
 
     @Override
@@ -160,7 +161,13 @@ public class Polisa implements OpstiDomenskiObjekat {
 
     @Override
     public String pretraga() {
-        return "SELECT * FROM polisa";
+        return String.format(
+                "SELECT p.*, k.*, v.*, ru.*, rr.* "
+                + "FROM polisa p "
+                + "JOIN klijent k ON p.KlijentID = k.KlijentID "
+                + "JOIN vozilo v ON p.VoziloID = v.VoziloID "
+                + "JOIN referent ru ON p.ReferentUgovarao = ru.ReferentID "
+                + "LEFT JOIN referent rr ON p.ReferentRaskidao = rr.ReferentID");
     }
 
     @Override
@@ -168,16 +175,35 @@ public class Polisa implements OpstiDomenskiObjekat {
         List<OpstiDomenskiObjekat> lista = new ArrayList<>();
         try {
             while (rs.next()) {
-                lista.add(new Polisa(
-                        rs.getInt("PolisaID"),
-                        rs.getDouble("Ukupno"),
-                        rs.getInt("PremijskiStepen"),
-                        rs.getDate("DatumUgovaranja"),
-                        rs.getDate("DatumRaskidanja"),
-                        new Klijent(),
-                        new Vozilo(),
-                        new Referent(),
-                        new Referent()));
+                Klijent k = new Klijent(
+                        rs.getInt("k.KlijentID"),
+                        rs.getString("k.Ime"),
+                        rs.getString("k.Prezime"), null, null, new Mesto());
+                Vozilo v = new Vozilo(
+                        rs.getInt("v.VoziloID"),
+                        rs.getString("v.RegTablice"),
+                        rs.getString("v.Marka"),
+                        rs.getString("v.Model"), -1, null);
+                Referent rUgov = new Referent(
+                        rs.getInt("ru.ReferentID"),
+                        rs.getString("ru.Ime"),
+                        rs.getString("ru.Prezime"), null, null);
+                Referent rRask = new Referent(
+                        rs.getInt("rr.ReferentID"),
+                        rs.getString("rr.Ime"),
+                        rs.getString("rr.Prezime"), null, null);
+
+                lista.add(
+                        new Polisa(
+                                rs.getInt("PolisaID"),
+                                rs.getDouble("Ukupno"),
+                                rs.getInt("PremijskiStepen"),
+                                rs.getDate("DatumUgovaranja"),
+                                rs.getDate("DatumRaskidanja"),
+                                k,
+                                v,
+                                rUgov,
+                                rRask));
             }
         } catch (SQLException e) {
             System.out.println("Greska prilikom ucitavanja: " + e);

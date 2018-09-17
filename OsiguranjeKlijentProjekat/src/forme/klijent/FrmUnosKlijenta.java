@@ -17,6 +17,8 @@ import util.Sesija;
  */
 public class FrmUnosKlijenta extends javax.swing.JPanel {
 
+    private int klijentId;
+
     /**
      * Creates new form FrmUnosKlijenta
      */
@@ -47,8 +49,6 @@ public class FrmUnosKlijenta extends javax.swing.JPanel {
         btnSacuvaj = new javax.swing.JButton();
         btnIzmeni = new javax.swing.JButton();
         btnObrisi = new javax.swing.JButton();
-        btnKreirajKlijenta = new javax.swing.JButton();
-        txtKlijentID = new javax.swing.JTextField();
         btnOdustani = new javax.swing.JButton();
 
         jLabel1.setText("Ime: ");
@@ -81,13 +81,6 @@ public class FrmUnosKlijenta extends javax.swing.JPanel {
         btnObrisi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnObrisiActionPerformed(evt);
-            }
-        });
-
-        btnKreirajKlijenta.setText("Kreiraj novog klijenta");
-        btnKreirajKlijenta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnKreirajKlijentaActionPerformed(evt);
             }
         });
 
@@ -126,21 +119,13 @@ public class FrmUnosKlijenta extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnObrisi)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnOdustani))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnKreirajKlijenta)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtKlijentID, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnOdustani)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnKreirajKlijenta)
-                    .addComponent(txtKlijentID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txtIme, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -160,7 +145,7 @@ public class FrmUnosKlijenta extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(jcbMesto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSacuvaj)
                     .addComponent(btnIzmeni)
@@ -176,15 +161,14 @@ public class FrmUnosKlijenta extends javax.swing.JPanel {
             return;
         }
         try {
-            int klijentId = Integer.parseInt(txtKlijentID.getText());
             String ime = txtIme.getText().trim();
             String prezime = txtPrezime.getText().trim();
             String jmbg = txtJbmg.getText().trim();
             String ulicaBroj = txtUlicaBroj.getText();
             Mesto mesto = (Mesto) jcbMesto.getSelectedItem();
-            
+
             Klijent k = new Klijent(klijentId, ime, prezime, jmbg, ulicaBroj, mesto);
-                        
+
             TransferObjekatOdgovor toOdgovor = Kontroler.getInstance().zapamtiKlijenta(k);
             if (toOdgovor.getIzuzetak() == null) {
                 JOptionPane.showMessageDialog(this, "Klijent je sacuvan.");
@@ -197,21 +181,45 @@ public class FrmUnosKlijenta extends javax.swing.JPanel {
     }//GEN-LAST:event_btnSacuvajActionPerformed
 
     private void btnIzmeniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIzmeniActionPerformed
-        // TODO add your handling code here:
+        if (isFieldEmpty()) {
+            JOptionPane.showMessageDialog(this, "Niste popunili potrebna polja.");
+            return;
+        }
+        try {
+            String ime = txtIme.getText().trim();
+            String prezime = txtPrezime.getText().trim();
+            String jmbg = txtJbmg.getText().trim();
+            String ulicaBroj = txtUlicaBroj.getText();
+            Mesto mesto = (Mesto) jcbMesto.getSelectedItem();
+
+            Klijent k = new Klijent(klijentId, ime, prezime, jmbg, ulicaBroj, mesto);
+
+            TransferObjekatOdgovor toOdgovor = Kontroler.getInstance().zapamtiKlijenta(k);
+            if (toOdgovor.getIzuzetak() == null) {
+                JOptionPane.showMessageDialog(this, "Klijent je izmenjen.");
+            } else {
+                throw new Exception(toOdgovor.getIzuzetak());
+            }
+        } catch (Exception e) {
+            System.out.println("Greska: " + e);
+        }
     }//GEN-LAST:event_btnIzmeniActionPerformed
 
     private void btnObrisiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnObrisiActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnObrisiActionPerformed
+        try {
+            Klijent k = new Klijent();
+            k.setKlijentId(klijentId);
 
-    private void btnKreirajKlijentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKreirajKlijentaActionPerformed
-        try {        
-        int i = Kontroler.getInstance().kreirajNovogKlijenta();
-        txtKlijentID.setText(i + "");
-        } catch (IOException | ClassNotFoundException ex) {
-            System.out.println("Greska: " + ex);
-        }        
-    }//GEN-LAST:event_btnKreirajKlijentaActionPerformed
+            TransferObjekatOdgovor toOdgovor = Kontroler.getInstance().obrisiKlijenta(k);
+            if (toOdgovor.getIzuzetak() == null) {
+                JOptionPane.showMessageDialog(this, "Klijent je obrisan.");
+            } else {
+                throw new Exception(toOdgovor.getIzuzetak());
+            }
+        } catch (Exception e) {
+            System.out.println("Greska: " + e);
+        }
+    }//GEN-LAST:event_btnObrisiActionPerformed
 
     private void btnOdustaniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOdustaniActionPerformed
         SwingUtilities.getWindowAncestor(this).dispose();
@@ -220,7 +228,6 @@ public class FrmUnosKlijenta extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIzmeni;
-    private javax.swing.JButton btnKreirajKlijenta;
     private javax.swing.JButton btnObrisi;
     private javax.swing.JButton btnOdustani;
     private javax.swing.JButton btnSacuvaj;
@@ -232,13 +239,12 @@ public class FrmUnosKlijenta extends javax.swing.JPanel {
     private javax.swing.JComboBox jcbMesto;
     private javax.swing.JTextField txtIme;
     private javax.swing.JTextField txtJbmg;
-    private javax.swing.JTextField txtKlijentID;
     private javax.swing.JTextField txtPrezime;
     private javax.swing.JTextField txtUlicaBroj;
     // End of variables declaration//GEN-END:variables
 
     private void srediFormu() {
-        try {            
+        try {
             List<OpstiDomenskiObjekat> listaMesta = Kontroler.getInstance().vratiMesta();
             jcbMesto.removeAllItems();
             for (OpstiDomenskiObjekat m : listaMesta) {
@@ -247,31 +253,29 @@ public class FrmUnosKlijenta extends javax.swing.JPanel {
         } catch (IOException | ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
-        
+
         Klijent k = (Klijent) Sesija.getInstance().get("izabrani_klijent");
-            if (k != null) {
-                // Operacija izmene ili brisanja
-                btnSacuvaj.setVisible(false);
-                btnKreirajKlijenta.setEnabled(false);
-                
-                txtKlijentID.setText(k.getKlijentId() + "");
-                txtIme.setText(k.getIme());
-                txtPrezime.setText(k.getPrezime());
-                txtJbmg.setText(k.getJmbg());
-                txtUlicaBroj.setText(k.getUlicaBroj());                
-                jcbMesto.setSelectedItem(k.getMesto());
-                Sesija.getInstance().remove("izabrani_klijent");
-                txtKlijentID.setEditable(false);
-            } else {
-                // Operacija unosa
-                btnIzmeni.setVisible(false);
-                btnObrisi.setVisible(false);
-            }
+        if (k != null) {
+            // Operacija izmene ili brisanja
+            btnSacuvaj.setVisible(false);
+
+            klijentId = k.getKlijentId();
+            txtIme.setText(k.getIme());
+            txtPrezime.setText(k.getPrezime());
+            txtJbmg.setText(k.getJmbg());
+            txtUlicaBroj.setText(k.getUlicaBroj());
+            jcbMesto.setSelectedItem(k.getMesto());
+            Sesija.getInstance().remove("izabrani_klijent");
+        } else {
+            // Operacija unosa
+            btnIzmeni.setVisible(false);
+            btnObrisi.setVisible(false);
+            klijentId = -1;
+        }
     }
 
     private boolean isFieldEmpty() {
-        return (txtKlijentID.getText().isEmpty() ||
-                txtIme.getText().isEmpty()
+        return (txtIme.getText().isEmpty()
                 || txtPrezime.getText().isEmpty()
                 || txtJbmg.getText().isEmpty()
                 || txtUlicaBroj.getText().isEmpty());

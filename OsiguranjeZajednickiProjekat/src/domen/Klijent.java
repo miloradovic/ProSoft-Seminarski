@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -84,17 +85,44 @@ public class Klijent implements OpstiDomenskiObjekat {
     }
 
     @Override
+    public int hashCode() {
+        int hash = 3;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Klijent other = (Klijent) obj;
+        if (!Objects.equals(this.ime, other.ime)) {
+            return false;
+        }
+        if (!Objects.equals(this.prezime, other.prezime)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public String unos() {
         return String.format(
-                "INSERT INTO klijent VALUES (%d, '%s', '%s', '%s', '%s', %d)",
-                klijentId, ime, prezime, jmbg, ulicaBroj, mesto.getPtt());
+                "INSERT INTO klijent(Ime, Prezime, JMBG, UlicaBroj, Ptt) VALUES ('%s', '%s', '%s', '%s', %d)",
+                ime, prezime, jmbg, ulicaBroj, mesto.getPtt());
     }
 
     @Override
     public String izmena() {
         return String.format(
-                "UPDATE klijent SET Ime = '%s', Prezime = '%s', UlicaBroj = '%s', Ptt = $d WHERE KlijentID = %d",
-                ime, prezime, ulicaBroj, mesto.getPtt(), klijentId);
+                "UPDATE klijent SET Ime = '%s', Prezime = '%s', JMBG = '%s', UlicaBroj = '%s', Ptt = %d WHERE KlijentID = %d",
+                ime, prezime, jmbg, ulicaBroj, mesto.getPtt(), klijentId);
     }
 
     @Override
@@ -118,7 +146,7 @@ public class Klijent implements OpstiDomenskiObjekat {
                         rs.getString("Prezime"),
                         rs.getString("JMBG"),
                         rs.getString("UlicaBroj"),
-                        new Mesto(rs.getInt("Ptt"), rs.getString("Naziv"))));
+                        new Mesto(rs.getInt("m.Ptt"), rs.getString("m.Naziv"))));
             }
         } catch (SQLException e) {
             System.out.println("Greska prilikom ucitavanja: " + e);

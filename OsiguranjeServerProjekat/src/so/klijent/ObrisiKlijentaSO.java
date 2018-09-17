@@ -9,6 +9,10 @@ import so.OpstaSO;
  */
 public class ObrisiKlijentaSO extends OpstaSO {
 
+    public ObrisiKlijentaSO(Object obj) {
+        super(obj);
+    }
+
     @Override
     protected void izvrsiOperaciju(Object obj) throws Exception {
         db.obrisi((OpstiDomenskiObjekat) obj);

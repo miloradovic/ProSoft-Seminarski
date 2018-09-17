@@ -58,16 +58,9 @@ public class Kontroler {
         return (List) toOdgovor.getRezultat();
     }
 
-    public int kreirajNovogKlijenta() throws IOException, ClassNotFoundException {
-        toZahtev.setOperacija(Operacija.KREIRAJ_NOVOG_KLIJENTA);
-        Komunikacija.getInstance().posalji(toZahtev);
-        toOdgovor = Komunikacija.getInstance().procitaj();
-
-        return (int) toOdgovor.getRezultat();
-    }
-
     public TransferObjekatOdgovor zapamtiKlijenta(Klijent k) throws IOException, ClassNotFoundException {
-        toZahtev = new TransferObjekatZahtev(Operacija.ZAPAMTI_KLIJENTA, k);
+        toZahtev.setOperacija(Operacija.ZAPAMTI_KLIJENTA);
+        toZahtev.setParametar(k);
         Komunikacija.getInstance().posalji(toZahtev);
         return Komunikacija.getInstance().procitaj();
     }
@@ -95,19 +88,19 @@ public class Kontroler {
         return Komunikacija.getInstance().procitaj();
     }
 
-    public int kreirajNovuPolisu() throws IOException, ClassNotFoundException {
-        toZahtev.setOperacija(Operacija.KREIRAJ_NOVU_POLISU);
-        Komunikacija.getInstance().posalji(toZahtev);
-        toOdgovor = Komunikacija.getInstance().procitaj();
-
-        return (int) toOdgovor.getRezultat();
-    }
-
     public List<Polisa> pretraziPolise() throws IOException, ClassNotFoundException {
         toZahtev.setOperacija(Operacija.PRETRAZI_POLISE);
+        toZahtev.setParametar(new Polisa());
         Komunikacija.getInstance().posalji(toZahtev);
         toOdgovor = Komunikacija.getInstance().procitaj();
 
         return (List<Polisa>) toOdgovor.getRezultat();
+    }
+
+    public TransferObjekatOdgovor obrisiKlijenta(Klijent k) throws IOException, ClassNotFoundException {
+        toZahtev.setOperacija(Operacija.OBRISI_KLIJENTA);
+        toZahtev.setParametar(k);
+        Komunikacija.getInstance().posalji(toZahtev);
+        return Komunikacija.getInstance().procitaj();
     }
 }

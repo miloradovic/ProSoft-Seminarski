@@ -17,10 +17,15 @@ public class ZapamtiPolisuSO extends OpstaSO {
     @Override
     protected void izvrsiOperaciju(Object obj) throws Exception {
         Polisa p = (Polisa) obj;
-        db.sacuvaj(p);
-        for (StavkaPolise stavka : p.getListaStavki()) {
-            db.sacuvaj(stavka);
+        if (p.getReferentRaskidanje() != null) {
+            db.izmeni(p);
+        } else {
+            int i = db.sacuvaj(p);
+            for (StavkaPolise stavka : p.getListaStavki()) {
+                stavka.setPolisaId(i);
+                db.sacuvaj(stavka);
+            }
         }
     }
-    
+
 }

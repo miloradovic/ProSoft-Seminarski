@@ -50,10 +50,6 @@ public class NitKlijent extends Thread {
                         OpstiDomenskiObjekat r = Kontroler.getInstance().nadjiReferenta((OpstiDomenskiObjekat) toZahtev.getParametar());
                         toOdgovor.setRezultat(r);
                         break;
-                    case Operacija.KREIRAJ_NOVOG_KLIJENTA:
-                        int i = Kontroler.getInstance().kreirajNovogKlijenta();
-                        toOdgovor.setRezultat(i);
-                        break;
                     case Operacija.ZAPAMTI_KLIJENTA:
                         Klijent k = (Klijent) toZahtev.getParametar();
                         Kontroler.getInstance().zapamtiKlijenta(k);
@@ -81,16 +77,15 @@ public class NitKlijent extends Thread {
                         Vozilo vozilo = (Vozilo) toZahtev.getParametar();
                         OpstiDomenskiObjekat odoUcitaj = Kontroler.getInstance().ucitajVozilo(vozilo);
                         break;
-                    case Operacija.KREIRAJ_NOVU_POLISU:
-                        int j = Kontroler.getInstance().kreirajNovuPolisu();
-                        toOdgovor.setRezultat(j);
-                        break;
                     case Operacija.ZAPAMTI_POLISU:
                         Polisa p = (Polisa) toZahtev.getParametar();
                         Kontroler.getInstance().zapamtiPolisu(p);
                         toOdgovor.setPoruka("Polisa je sacuvana.");
                         break;
                     case Operacija.PRETRAZI_POLISE:
+                        Polisa polisaKriter = (Polisa) toZahtev.getParametar();
+                        List<OpstiDomenskiObjekat> lp = Kontroler.getInstance().pretraziPolise(polisaKriter);
+                        toOdgovor.setRezultat(lp);
                         break;
                     case Operacija.UCITAJ_POLISU:
                         break;
