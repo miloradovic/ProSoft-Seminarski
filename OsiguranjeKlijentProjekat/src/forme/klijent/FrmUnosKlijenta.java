@@ -219,6 +219,7 @@ public class FrmUnosKlijenta extends javax.swing.JPanel {
         } catch (Exception e) {
             System.out.println("Greska: " + e);
         }
+        SwingUtilities.getWindowAncestor(this).dispose();
     }//GEN-LAST:event_btnObrisiActionPerformed
 
     private void btnOdustaniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOdustaniActionPerformed

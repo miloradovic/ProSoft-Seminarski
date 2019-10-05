@@ -111,30 +111,30 @@ public class FrmLogin extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Unesi podatke");
                 return;
             }
-            
+
             String user = txtUser.getText().trim();
             char[] sifraChar = passwordField.getPassword();
             String pass = new String(sifraChar);
-            
+
             Referent r = new Referent();
             r.setUser(user);
             r.setPass(pass);
-                        
+
             try {
                 r = Kontroler.getInstance().nadjiReferenta(r);
             } catch (ClassNotFoundException ex) {
                 System.out.println("Greska: " + ex);
             }
-            
+
             if (r != null) {
                 Sesija.getInstance().put("Referent", r);
-                
+
                 FrmMain glavna = new FrmMain();
                 glavna.setVisible(true);
                 this.setVisible(false);
                 this.dispose();
             } else {
-                JOptionPane.showMessageDialog(this, "Netacni podaci ili navedeni Referent ne postoji.");
+                JOptionPane.showMessageDialog(this, "Sistem ne može da nađe referenta na osnovu unetih vrednosti.", "Greska", JOptionPane.ERROR_MESSAGE);
             }
         } catch (HeadlessException | IOException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());

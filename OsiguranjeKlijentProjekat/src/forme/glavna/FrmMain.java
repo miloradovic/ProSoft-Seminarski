@@ -7,6 +7,7 @@ import forme.polisa.FrmPretragaPolise;
 import forme.vozila.FrmPretragaVozila;
 import java.awt.BorderLayout;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import util.Sesija;
 
 /**
@@ -21,6 +22,7 @@ public class FrmMain extends javax.swing.JFrame {
     public FrmMain() {
         initComponents();
         lblReferent.setText("Referent: " + Sesija.getInstance().get("Referent"));
+        JOptionPane.showMessageDialog(this, "Uspesno ste se prijavili na sistem.");
     }
 
     /**
@@ -160,7 +162,7 @@ public class FrmMain extends javax.swing.JFrame {
 
     private void jmnItemPretragaKlijentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmnItemPretragaKlijentaActionPerformed
         FrmPretragaKlijenata fpk = new FrmPretragaKlijenata();
-        JDialog d = new JDialog(this, "Pretraga polisa", true);
+        JDialog d = new JDialog(this, "Pretraga klijenta", true);
         d.setLayout(new BorderLayout());
         d.add(fpk, BorderLayout.CENTER);
         d.pack();
